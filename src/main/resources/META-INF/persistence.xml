@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+    <persistence-unit name="MarketingApplicationEJB"
+                      transaction-type="JTA">
+        <jta-data-source>MarketingApplicationDB</jta-data-source>
+        <class>it.polimi.db2.application.entities.User</class>
+    </persistence-unit>
+</persistence>
