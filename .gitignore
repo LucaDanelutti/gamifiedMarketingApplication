@@ -9,3 +9,6 @@ target/
 
 # Mac
 .DS_Store
+
+# Dependencies (MySQL, TomEE)
+dependencies/
