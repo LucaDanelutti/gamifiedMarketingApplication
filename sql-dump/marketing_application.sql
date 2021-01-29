@@ -7,7 +7,7 @@
 #
 # Host: aws3.remote.lucadanelutti.it (MySQL 5.7.32)
 # Database: marketing_application
-# Generation Time: 2021-01-29 18:30:49 +0000
+# Generation Time: 2021-01-29 21:33:06 +0000
 # ************************************************************
 
 
@@ -63,6 +63,16 @@ CREATE TABLE `product_reviews` (
   CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaires` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+LOCK TABLES `product_reviews` WRITE;
+/*!40000 ALTER TABLE `product_reviews` DISABLE KEYS */;
+
+INSERT INTO `product_reviews` (`id`, `questionnaire_id`, `value`)
+VALUES
+	(1,1,'Good product'),
+	(3,1,'Excellent choice!');
+
+/*!40000 ALTER TABLE `product_reviews` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table questionnaires
@@ -75,9 +85,19 @@ CREATE TABLE `questionnaires` (
   `name` varchar(32) NOT NULL DEFAULT '',
   `image` blob NOT NULL,
   `date` date NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+LOCK TABLES `questionnaires` WRITE;
+/*!40000 ALTER TABLE `questionnaires` DISABLE KEYS */;
+
+INSERT INTO `questionnaires` (`id`, `name`, `image`, `date`)
+VALUES
+	(1,'Example questionnaire',X'4141','2021-01-29');
+
+/*!40000 ALTER TABLE `questionnaires` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table questions_marketing
@@ -185,7 +205,7 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `banned`)
 VALUES
 	(1,'user1','user','example@example.com',0),
-	(2,'user2','user','example@example.com',0);
+	(2,'user2','user','example@example.com',1);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
