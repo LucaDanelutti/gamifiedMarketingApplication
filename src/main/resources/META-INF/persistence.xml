@@ -7,5 +7,7 @@
                       transaction-type="JTA">
         <jta-data-source>MarketingApplicationDB</jta-data-source>
         <class>it.polimi.db2.application.entities.User</class>
+        <class>it.polimi.db2.application.entities.Questionnaire</class>
+        <class>it.polimi.db2.application.entities.Review</class>
     </persistence-unit>
 </persistence>

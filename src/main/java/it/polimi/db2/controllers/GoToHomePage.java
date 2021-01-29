@@ -13,15 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.polimi.db2.application.entities.Questionnaire;
+import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.services.QuestionnaireService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-@WebServlet("/Home")
+@WebServlet("/home")
 public class GoToHomePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+
+	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
+	private QuestionnaireService qService;
 
 	public GoToHomePage() {
 		super();
@@ -46,10 +52,23 @@ public class GoToHomePage extends HttpServlet {
 			return;
 		}
 
+		//If the user is banned redirect to the banned page
+		String bannedPath = getServletContext().getContextPath() + "/banned.html";
+		User user = (User) session.getAttribute("user");
+		if (user.getBanned()) {
+			response.sendRedirect(bannedPath);
+			return;
+		}
+
+		//Retrieve the questionnaire of the day
+		Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
+
 		// Redirect to the Home page
-		String path = "/WEB-INF/Home.html";
+		String path = "/WEB-INF/home.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
+		ctx.setVariable("questionnaire", questionnaire);
 
 		templateEngine.process(path, ctx, response.getWriter());
 	}
