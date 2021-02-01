@@ -1,6 +1,7 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.polimi.db2.application.entities.Marketing_Question;
 import it.polimi.db2.application.entities.Questionnaire;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
@@ -42,8 +44,7 @@ public class GoToHomePage extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginPath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
@@ -62,6 +63,8 @@ public class GoToHomePage extends HttpServlet {
 
 		//Retrieve the questionnaire of the day
 		Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
+		ArrayList<Marketing_Question> marketing_questions = qService.getMarketingQuestions(questionnaire.getId());
+
 
 		// Redirect to the Home page
 		String path = "/WEB-INF/home.html";
@@ -69,12 +72,12 @@ public class GoToHomePage extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
 		ctx.setVariable("questionnaire", questionnaire);
+		ctx.setVariable("marketing_questions", marketing_questions);
 
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 

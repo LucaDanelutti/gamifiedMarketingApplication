@@ -8,7 +8,6 @@ import java.util.Date;
 @Entity
 @Table(name = "questionnaires", schema = "marketing_application")
 public class Questionnaire implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -16,8 +15,14 @@ public class Questionnaire implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+
     @OneToMany(mappedBy = "questionnaire")
     private Collection<Review> reviews;
+
+    @OneToMany(mappedBy= "questionnaire")
+    private Collection<Marketing_Question> marketing_questions;
+
+
 
     public Questionnaire() {
     }
@@ -44,5 +49,17 @@ public class Questionnaire implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Collection<Marketing_Question> getMarketing_questions() {
+        return marketing_questions;
+    }
+
+    public void setMarketing_questions(Collection<Marketing_Question> marketing_questions) {
+        this.marketing_questions = marketing_questions;
+    }
+
+    public int getId() {
+        return id;
     }
 }

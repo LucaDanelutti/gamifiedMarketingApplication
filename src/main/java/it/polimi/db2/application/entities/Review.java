@@ -12,8 +12,7 @@ public class Review {
     private int id;
     private String value;
 
-    @ManyToOne()
-    @JoinColumn(name = "questionnaire_id")
+    @ManyToOne
     private Questionnaire questionnaire;
 
     public Review() {

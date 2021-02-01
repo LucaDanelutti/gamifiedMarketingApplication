@@ -9,7 +9,14 @@
 <body>
 	<h1>Welcome to the private Home Page</h1>
 	<p th:text="${'Nice to see you again ' + session.user.username}"></p>
+
+
 	<p th:text="${'The questionnaire of the day is: ' + questionnaire.name + ' with the following reviews: '}"></p>
 	<p th:each="r : ${questionnaire.reviews}" th:text="${r.value}"></p>
+
+	<p>MARKETING QUESTIONS:</p>
+	<p th:each="mQ : ${marketing_questions}" th:text="${mQ.question}"></p>
+
+
 </body>
 </html>
