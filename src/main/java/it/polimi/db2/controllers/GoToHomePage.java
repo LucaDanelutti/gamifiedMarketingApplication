@@ -1,32 +1,23 @@
 package it.polimi.db2.controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import it.polimi.db2.application.entities.Marketing_Question;
+import it.polimi.db2.application.entities.Questionnaire;
+import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.services.QuestionnaireService;
+import org.thymeleaf.context.WebContext;
 
 import javax.ejb.EJB;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
 
-import it.polimi.db2.application.entities.Marketing_Question;
-import it.polimi.db2.application.entities.Questionnaire;
-import it.polimi.db2.application.entities.User;
-import it.polimi.db2.application.services.QuestionnaireService;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
-@WebServlet("/home")
+@WebServlet(urlPatterns = "/home")
 public class GoToHomePage extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 
 	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
 	private QuestionnaireService qService;
@@ -35,53 +26,42 @@ public class GoToHomePage extends HttpServlet {
 		super();
 	}
 
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// If the user is not logged in (not present in session) redirect to the login
-		String loginPath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
+			String loginPath = getServletContext().getContextPath() + "/login";
 			response.sendRedirect(loginPath);
 			return;
 		}
 
-		//If the user is banned redirect to the banned page
-		String bannedPath = getServletContext().getContextPath() + "/banned.html";
+		// Get user
 		User user = (User) session.getAttribute("user");
+
+		// Get servlet context
+		final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
+
+		//If the user is banned redirect to the banned page
 		if (user.getBanned()) {
+			String bannedPath = getServletContext().getContextPath() + "/banned";
 			response.sendRedirect(bannedPath);
 			return;
 		}
 
 		//Retrieve the questionnaire of the day
-		Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
-		ArrayList<Marketing_Question> marketing_questions = qService.getMarketingQuestions(questionnaire.getId());
-
-
-		// Redirect to the Home page
-		String path = "/WEB-INF/home.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-		ctx.setVariable("questionnaire", questionnaire);
-		ctx.setVariable("marketing_questions", marketing_questions);
-
-		templateEngine.process(path, ctx, response.getWriter());
+		try {
+			Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
+			ArrayList<Marketing_Question> marketing_questions = qService.getMarketingQuestions(questionnaire.getId());
+			ctx.setVariable("questionnaire", questionnaire);
+			ctx.setVariable("marketing_questions", marketing_questions);
+		} catch (Exception e) {
+			ctx.setVariable("errorMsg", "Couldn't retrieve questionnaire of the day!");
+		} finally {
+			Thymeleaf.render("home", ctx);
+		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		doGet(request, response); // Redirecting post to gets?
 	}
-
-	public void destroy() {
-	}
-
 }

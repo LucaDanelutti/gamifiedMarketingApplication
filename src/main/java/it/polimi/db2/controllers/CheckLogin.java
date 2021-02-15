@@ -1,30 +1,25 @@
 package it.polimi.db2.controllers;
 
-import java.io.IOException;
+import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.exceptions.CredentialsException;
+import it.polimi.db2.application.services.UserService;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.thymeleaf.context.WebContext;
 
 import javax.ejb.EJB;
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
-import it.polimi.db2.application.services.UserService;
-import it.polimi.db2.application.entities.User;
-import it.polimi.db2.application.exceptions.CredentialsException;
-import javax.persistence.NonUniqueResultException;
-
-@WebServlet("/CheckLogin")
+@WebServlet(urlPatterns = "/CheckLogin")
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
+
 	@EJB(name = "it.polimi.db2.application.services/UserService")
 	private UserService usrService;
 
@@ -32,24 +27,15 @@ public class CheckLogin extends HttpServlet {
 		super();
 	}
 
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws IOException {
 		// obtain and escape params
-		String usrn = null;
-		String pwd = null;
+		String username;
+		String password;
 		try {
-			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
-			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
-			if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()) {
+			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
+			password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+			if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
 			}
 
@@ -61,7 +47,7 @@ public class CheckLogin extends HttpServlet {
 		User user;
 		try {
 			// query db to authenticate for user
-			user = usrService.checkCredentials(usrn, pwd);
+			user = usrService.checkCredentials(username, password);
 		} catch (CredentialsException | NonUniqueResultException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
@@ -72,20 +58,19 @@ public class CheckLogin extends HttpServlet {
 		// show login page with error message
 
 		String path;
-		if (user == null) {
+		if (user == null) { // User not logged in
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Incorrect username or password");
-			path = "/index.html";
-			templateEngine.process(path, ctx, response.getWriter());
-		} else {
+			request.getSession().setAttribute("errorMsg", "Incorrect username or password");
+			path = getServletContext().getContextPath() + "/login";
+
+//			ctx.setVariable("errorMsg", "Incorrect username or password");
+//			Thymeleaf.render("login", ctx);
+		} else { // User logged in
 			request.getSession().setAttribute("user", user);
 			path = getServletContext().getContextPath() + "/home";
-			response.sendRedirect(path);
 		}
 
-	}
-
-	public void destroy() {
+		response.sendRedirect(path);
 	}
 }
