@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Home</title>
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+<h1>Home</h1>
+<p th:text="${'Nice to see you again ' + session.user.username}"></p>
+
+<div th:if="${errorMsg}">
+    <p th:text="${errorMsg}"></p>
+</div>
+<!-- This renders if there's no error message -->
+<div th:unless="${errorMsg}">
+
+    <p th:text="${'The questionnaire of the day is: ' + questionnaire.name + ' with the following reviews: '}"></p>
+    <p th:each="r : ${questionnaire.reviews}" th:text="${r.value}"></p>
+
+    <h3>MARKETING QUESTIONS:</h3>
+    <p th:each="mq : ${marketing_questions}" th:text="${mq.question}"></p>
+
+</div>
+</body>
+</html>
