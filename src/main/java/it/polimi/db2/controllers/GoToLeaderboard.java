@@ -1,8 +1,11 @@
 package it.polimi.db2.controllers;
 
 import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.services.LeaderBoardService;
+import it.polimi.db2.application.services.QuestionnaireService;
 import org.thymeleaf.context.WebContext;
 
+import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,8 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/leaderboard")
 public class GoToLeaderboard extends HttpServlet {
+	@EJB(name = "it.polimi.db2.application.services/LeaderBoardService")
+	private LeaderBoardService lbService;
 
 	public GoToLeaderboard() {
 		super();
@@ -41,7 +46,7 @@ public class GoToLeaderboard extends HttpServlet {
 
 		//Retrieve the questionnaire of the day
 		try {
-			// Fetch leaderboard data
+			ctx.setVariable("leaderboard", lbService.getLeaderBoard());
 		} catch (Exception e) {
 			ctx.setVariable("errorMsg", "Couldn't retrieve leaderboard data!");
 		} finally {

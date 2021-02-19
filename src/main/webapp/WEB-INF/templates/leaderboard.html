@@ -25,9 +25,9 @@
             </tr>
         </thead>
         <tbody>
-        <tr th:each="user,status : ${leaderboard}">
-            <td>${user.name}</td>
-            <td>${user.score}</td>
+        <tr th:each="pair,status : ${leaderboard}">
+            <td th:text="${pair.user.username}"></td>
+            <td th:text="${pair.score}"></td>
         </tr>
         </tbody>
     </table>
