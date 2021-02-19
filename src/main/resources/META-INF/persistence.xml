@@ -14,6 +14,7 @@
         <class>it.polimi.db2.application.entities.StatsQuestion</class>
         <class>it.polimi.db2.application.entities.StatsReply</class>
         <class>it.polimi.db2.application.entities.Score</class>
+        <class>it.polimi.db2.application.entities.OffensiveWord</class>
         <class>it.polimi.db2.application.entities.Login_Log</class>
     </persistence-unit>
 </persistence>

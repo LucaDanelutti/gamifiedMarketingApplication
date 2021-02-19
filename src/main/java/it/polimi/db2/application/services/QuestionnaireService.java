@@ -50,4 +50,14 @@ public class QuestionnaireService {
         StatsReply reply = new StatsReply(question, user, questionnaire, value);
         em.persist(reply);
     }
+
+    public boolean checkReplies(List<String> values) {
+        List<OffensiveWord> words = em.createNamedQuery("OffensiveWord.findAll", OffensiveWord.class).getResultList();
+        for (String value: values) {
+            for (OffensiveWord word: words) {
+                if (value.toLowerCase().contains(word.getWord().toLowerCase())) return false;
+            }
+        }
+        return true;
+    }
 }
