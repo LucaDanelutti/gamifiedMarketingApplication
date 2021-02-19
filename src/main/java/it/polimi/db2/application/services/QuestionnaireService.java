@@ -23,15 +23,15 @@ public class QuestionnaireService {
         throw new NonUniqueResultException();
     }
 
-    public ArrayList<MarketingQuestion> getMarketingQuestions(Integer questionnaire_id){
+    public List<MarketingQuestion> getMarketingQuestions(Integer questionnaire_id){
         Questionnaire questionnaire =  em.find(Questionnaire.class, questionnaire_id);
-        ArrayList<MarketingQuestion> marketing_questions = new ArrayList<>(questionnaire.getMarketingQuestions());
+        List<MarketingQuestion> marketingQuestions = new ArrayList<>(questionnaire.getMarketingQuestions());
 
-        if(marketing_questions.size()==0) {
+        if(marketingQuestions.size()==0) {
             //TODO: throw exception
             return null;
         }
-        return marketing_questions;
+        return marketingQuestions;
     }
 
     public List<StatsQuestion> getStatsQuestions() {

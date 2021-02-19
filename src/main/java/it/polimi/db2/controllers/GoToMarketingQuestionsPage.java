@@ -2,8 +2,10 @@ package it.polimi.db2.controllers;
 
 import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.services.QuestionnaireService;
 import org.thymeleaf.context.WebContext;
 
+import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/marketing_questions")
 public class GoToMarketingQuestionsPage extends HttpServlet {
+	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
+	private QuestionnaireService qService;
 
 	public GoToMarketingQuestionsPage() {
 		super();
@@ -43,9 +48,8 @@ public class GoToMarketingQuestionsPage extends HttpServlet {
 
 		//Retrieve the questionnaire of the day
 		try {
-			ArrayList<MarketingQuestion> marketing_questions = new ArrayList<>();
-
-			ctx.setVariable("marketing_questions", marketing_questions);
+			List<MarketingQuestion> marketingQuestions = qService.getMarketingQuestions(qService.getQuestionnaireOfTheDay().getId());
+			ctx.setVariable("marketing_questions", marketingQuestions);
 		} catch (Exception e) {
 			ctx.setVariable("errorMsg", "Couldn't retrieve marketing questions!");
 		} finally {

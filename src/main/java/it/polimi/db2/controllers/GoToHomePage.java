@@ -60,9 +60,7 @@ public class GoToHomePage extends HttpServlet {
 		//Retrieve the questionnaire of the day
 		try {
 			Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
-			ArrayList<MarketingQuestion> marketing_questions = qService.getMarketingQuestions(questionnaire.getId());
 			ctx.setVariable("questionnaire", questionnaire);
-			ctx.setVariable("marketing_questions", marketing_questions);
 		} catch (Exception e) {
 			ctx.setVariable("errorMsg", "Couldn't retrieve questionnaire of the day!");
 		} finally {
