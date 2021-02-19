@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+<h1>Leaderboard</h1>
+<div>
+    <a href="home">Back</a>
+</div>
+<!--Show Error if there's an error -->
+<div th:if="${errorMsg}">
+    <p th:text="${errorMsg}"></p>
+</div>
+<!-- This renders if there's no error message -->
+<div th:unless="${errorMsg}">
+    <h2>Product of the day</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>Username</td>
+                <td>Score</td>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user,status : ${leaderboard}">
+            <td>${user.name}</td>
+            <td>${user.score}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistical Questions</title>
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>Statistical Questions</h1>
+
+<!--Show Error if there's an error -->
+<div th:if="${errorMsg}">
+    <p th:text="${errorMsg}"></p>
+</div>
+<!-- This renders if there's no error message -->
+<div>
+    <div>
+        <div th:each="sq,status : ${stats_questions}">
+            <th:block th:switch="${sq.type}">
+                <div th:case="'BOOL'">
+                    <label th:for="${status.index}" th:text="${sq.question}"></label>
+                    <input th:id="${status.index}" th:name="${status.index}" type="checkbox">
+                </div>
+                <div th:case="'STRING'">
+                    <label th:for="${status.index}" th:text="${sq.question}"></label>
+                    <input th:id="${status.index}" th:name="${status.index}" type="text">
+                </div>
+                <div th:case="'NUMBER'">
+                    <label th:for="${status.index}" th:text="${sq.question}"></label>
+                    <input th:id="${status.index}" th:name="${status.index}" type="number">
+                </div>
+                <div th:case="'RATING'">
+                    <p th:for="${status.index}" th:text="${sq.question}"></p>
+                    <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                        <label th:for="|${status.index}-${i}|" th:text="${i}"></label>
+                        <input th:id="|${status.index}-${i}|" th:name="${status.index}" th:value="${i}" type="radio">
+                    </th:block>
+                </div>
+            </th:block>
+        </div>
+
+        <div>
+            <a href="marketing_questions">Back</a>
+            <button>Submit</button>
+            <button>Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>
