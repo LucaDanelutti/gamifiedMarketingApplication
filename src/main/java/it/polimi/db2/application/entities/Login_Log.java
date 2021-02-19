@@ -57,6 +57,7 @@ public class Login_Log implements Serializable {
 	public Login_Log() {
 	}
 
+
 	//GETTERS AND SETTERS
 
 	public LogKey getLogKey() {
@@ -74,7 +75,6 @@ public class Login_Log implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 
 	public int getCompilation_requested() {
 		return compilation_requested;
