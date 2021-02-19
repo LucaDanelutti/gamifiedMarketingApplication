@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "questionnaires", schema = "marketing_application")
+@NamedQuery(name = "Questionnaire.getQuestionnaireOfTheDay", query = "Select q from Questionnaire q where q.date = ?1")
 public class Questionnaire implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +17,11 @@ public class Questionnaire implements Serializable {
     private Date date;
 
 
-    @OneToMany(mappedBy = "questionnaire")
+    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER)
     private Collection<Review> reviews;
 
-    @OneToMany(mappedBy= "questionnaire")
-    private Collection<Marketing_Question> marketing_questions;
-
-
+    @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER)
+    private Collection<MarketingQuestion> marketingQuestions;
 
     public Questionnaire() {
     }
@@ -43,20 +42,13 @@ public class Questionnaire implements Serializable {
         this.name = name;
     }
 
-    public Date getDate() {
-        return date;
+    public Collection<MarketingQuestion> getMarketingQuestions() {
+        return marketingQuestions;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Collection<Marketing_Question> getMarketing_questions() {
-        return marketing_questions;
-    }
-
-    public void setMarketing_questions(Collection<Marketing_Question> marketing_questions) {
-        this.marketing_questions = marketing_questions;
+    public void addMarketingQuestion(MarketingQuestion q) {
+        marketingQuestions.add(q);
+        q.setQuestionnaire(this);
     }
 
     public int getId() {
