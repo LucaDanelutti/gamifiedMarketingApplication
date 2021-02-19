@@ -1,6 +1,6 @@
 package it.polimi.db2.controllers;
 
-import it.polimi.db2.application.entities.Marketing_Question;
+import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.User;
 import org.thymeleaf.context.WebContext;
 
@@ -43,7 +43,7 @@ public class GoToMarketingQuestionsPage extends HttpServlet {
 
 		//Retrieve the questionnaire of the day
 		try {
-			ArrayList<Marketing_Question> marketing_questions = new ArrayList<>();
+			ArrayList<MarketingQuestion> marketing_questions = new ArrayList<>();
 
 			ctx.setVariable("marketing_questions", marketing_questions);
 		} catch (Exception e) {

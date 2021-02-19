@@ -1,6 +1,7 @@
 package it.polimi.db2.application.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -18,6 +19,9 @@ public class MarketingQuestion {
     @ManyToOne
     @JoinColumn(name="questionnaire_id")
     private Questionnaire questionnaire;
+
+    @OneToMany(mappedBy = "question")
+    private List<MarketingReply> replies;
 
     public MarketingQuestion() {
     }
@@ -37,5 +41,9 @@ public class MarketingQuestion {
 
     public void setQuestionnaire(Questionnaire questionnaire) {
         this.questionnaire = questionnaire;
+    }
+
+    public void addReply(MarketingReply reply) {
+        replies.add(reply);
     }
 }

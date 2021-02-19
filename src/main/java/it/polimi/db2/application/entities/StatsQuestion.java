@@ -1,6 +1,7 @@
 package it.polimi.db2.application.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "stats_marketing", schema = "marketing_application")
@@ -14,6 +15,13 @@ public class StatsQuestion {
     @Enumerated(EnumType.STRING)
     private QuestionType type;
 
+    @OneToMany(mappedBy = "question")
+    private List<StatsReply> replies;
+
     public StatsQuestion() {
+    }
+
+    public void addReply(StatsReply reply) {
+        replies.add(reply);
     }
 }

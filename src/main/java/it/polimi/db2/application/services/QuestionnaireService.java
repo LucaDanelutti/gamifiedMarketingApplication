@@ -1,8 +1,6 @@
 package it.polimi.db2.application.services;
 
-import it.polimi.db2.application.entities.MarketingQuestion;
-import it.polimi.db2.application.entities.Questionnaire;
-import it.polimi.db2.application.entities.StatsQuestion;
+import it.polimi.db2.application.entities.*;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -40,4 +38,16 @@ public class QuestionnaireService {
         return em.createNamedQuery("StatsQuestion.findAll", StatsQuestion.class).getResultList();
     }
 
+    public void addMarketingReply(String value, int questionId, User user) {
+        MarketingQuestion question = em.find(MarketingQuestion.class, questionId);
+        MarketingReply reply = new MarketingReply(question, user, value);
+        em.persist(reply);
+    }
+
+    public void addStatsReply(String value, int questionId, int questionnaireId, User user) {
+        StatsQuestion question = em.find(StatsQuestion.class, questionId);
+        Questionnaire questionnaire = em.find(Questionnaire.class, questionnaireId);
+        StatsReply reply = new StatsReply(question, user, questionnaire, value);
+        em.persist(reply);
+    }
 }

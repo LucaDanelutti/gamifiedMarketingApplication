@@ -1,6 +1,5 @@
 package it.polimi.db2.controllers;
 
-import it.polimi.db2.application.entities.Marketing_Question;
 import it.polimi.db2.application.entities.User;
 import org.thymeleaf.context.WebContext;
 
