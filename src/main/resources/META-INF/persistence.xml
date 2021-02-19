@@ -9,6 +9,8 @@
         <class>it.polimi.db2.application.entities.User</class>
         <class>it.polimi.db2.application.entities.Questionnaire</class>
         <class>it.polimi.db2.application.entities.Review</class>
-        <class>it.polimi.db2.application.entities.Marketing_Question</class>
+        <class>it.polimi.db2.application.entities.MarketingQuestion</class>
+        <class>it.polimi.db2.application.entities.StatsQuestion</class>
+        <class>it.polimi.db2.application.entities.Login_Log</class>
     </persistence-unit>
 </persistence>

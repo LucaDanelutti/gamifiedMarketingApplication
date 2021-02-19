@@ -1,6 +1,7 @@
 package it.polimi.db2.application.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -21,11 +22,23 @@ public class User implements Serializable {
 	private String email;
 	private Boolean banned;
 
-	public String getEmail() {
-		return email;
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private List<Login_Log> logs;
+
+	//EMPTY
+	public User() {
 	}
 
-	public User() {
+	//METHODS
+	public void addNewLog(Login_Log log){
+		logs.add(log);
+		log.setUser(this);
+	}
+
+
+	//GETTER AND SETTERS
+	public String getEmail() {
+		return email;
 	}
 
 	public int getId() {
@@ -62,5 +75,13 @@ public class User implements Serializable {
 
 	public void setBanned(Boolean banned) {
 		this.banned = banned;
+	}
+
+	public List<Login_Log> getLogs() {
+		return logs;
+	}
+
+	public void setLogs(List<Login_Log> logs) {
+		this.logs = logs;
 	}
 }

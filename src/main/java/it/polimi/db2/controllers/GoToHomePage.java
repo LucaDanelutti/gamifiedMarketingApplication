@@ -1,13 +1,12 @@
 package it.polimi.db2.controllers;
 
-import it.polimi.db2.application.entities.Marketing_Question;
+import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.Questionnaire;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
 import org.thymeleaf.context.WebContext;
 
 import javax.ejb.EJB;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +40,16 @@ public class GoToHomePage extends HttpServlet {
 		// Get servlet context
 		final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
 
+		//Set user logs to ctx variable
+		/*
+			try {
+
+				ctx.setVariable("logs", user.getLogs());
+			}catch (Exception e ){
+				ctx.setVariable("errorMsg", "Unable to retrieve logs!");
+			}
+		*/
+
 		//If the user is banned redirect to the banned page
 		if (user.getBanned()) {
 			String bannedPath = getServletContext().getContextPath() + "/banned";
@@ -51,7 +60,7 @@ public class GoToHomePage extends HttpServlet {
 		//Retrieve the questionnaire of the day
 		try {
 			Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
-			ArrayList<Marketing_Question> marketing_questions = qService.getMarketingQuestions(questionnaire.getId());
+			ArrayList<MarketingQuestion> marketing_questions = qService.getMarketingQuestions(questionnaire.getId());
 			ctx.setVariable("questionnaire", questionnaire);
 			ctx.setVariable("marketing_questions", marketing_questions);
 		} catch (Exception e) {
