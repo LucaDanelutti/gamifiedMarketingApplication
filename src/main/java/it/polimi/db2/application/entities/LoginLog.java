@@ -22,6 +22,8 @@ public class LoginLog implements Serializable {
 	@Id
 	private Date timestamp;
 
+
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name= "user_id")
@@ -57,6 +59,9 @@ public class LoginLog implements Serializable {
 	}
 	public void setCompilation_completed(int compilation_completed) {
 		this.compilation_completed = compilation_completed;
+	}
+	public Date getTimestamp() {
+		return timestamp;
 	}
 
 }

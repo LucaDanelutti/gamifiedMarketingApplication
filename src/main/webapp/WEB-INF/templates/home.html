@@ -15,6 +15,9 @@
 </div>
 <!-- This renders if there's no error message -->
 <div th:unless="${errorMsg}">
+    <h2> Logs: </h2>
+    <p th:each="l : ${logs}" th:text="${l.timestamp}"></p>
+
     <h2>Product of the day</h2>
     <h3 th:text="${questionnaire.name}"></h3>
     <img class="product-image" src="https://images.unsplash.com/photo-1582966984235-87f5b2a72d20?auto=format&fit=crop&w=400&q=80">
