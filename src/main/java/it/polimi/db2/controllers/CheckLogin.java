@@ -68,7 +68,11 @@ public class CheckLogin extends HttpServlet {
 //			Thymeleaf.render("login", ctx);
 		} else { // User logged in
 			request.getSession().setAttribute("user", user);
-			path = getServletContext().getContextPath() + "/home";
+			if(user.getIsAdmin()==1){ //the user is an admin user
+				path = getServletContext().getContextPath() + "/admin";
+			}else{ //the user is NOT an admin
+				path = getServletContext().getContextPath() + "/home";
+			}
 		}
 
 		response.sendRedirect(path);

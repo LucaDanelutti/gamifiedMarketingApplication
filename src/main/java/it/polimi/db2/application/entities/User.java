@@ -22,6 +22,12 @@ public class User implements Serializable {
 	private String email;
 	private Boolean banned;
 
+	public int getIsAdmin() {
+		return isAdmin;
+	}
+
+	private int isAdmin;
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<LoginLog> logs;
 

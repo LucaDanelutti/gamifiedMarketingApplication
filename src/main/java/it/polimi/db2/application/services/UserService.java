@@ -33,7 +33,6 @@ public class UserService {
 		else if (uList.size() == 1) {
 			User user = uList.get(0);
 
-			//TODO: create new login log for the user
 			LoginLog log = new LoginLog(user, new Date(System.currentTimeMillis()));
 			em.persist(log);
 
