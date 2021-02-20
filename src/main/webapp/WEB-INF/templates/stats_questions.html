@@ -17,8 +17,21 @@
     <form th:each="sq : ${stats_questions}" id="stats-form">
         <fieldset th:switch="${sq.type.toString()}">
             <div th:case="'BOOL'">
-                <label th:for="${sq.id}" th:text="${sq.question}"></label>
-                <input th:id="${sq.id}" th:name="${sq.id}" type="checkbox">
+                <b th:text="${sq.question}"></b>
+                <div>
+                    <div class="radio-box">
+                        <label th:for="|${sq.id}-f|">False</label>
+                        <input type="radio" th:name="${sq.id}" th:id="|${sq.id}-f|" value="false">
+                    </div>
+                    <div class="radio-box">
+                        <label th:for="|${sq.id}-t|">True</label>
+                        <input type="radio" th:name="${sq.id}" th:id="|${sq.id}-t|" value="true">
+                    </div>
+                    <div class="radio-box">
+                        <label th:for="|${sq.id}-n|">No Answer</label>
+                        <input type="radio" th:name="${sq.id}" th:id="|${sq.id}-n|" value="" checked>
+                    </div>
+                </div>
             </div>
             <div th:case="'STRING'">
                 <label th:for="${sq.id}" th:text="${sq.question}"></label>
@@ -28,15 +41,21 @@
                 <label th:for="${sq.id}" th:text="${sq.question}"></label>
                 <input th:id="${sq.id}" th:name="${sq.id}" type="number">
             </div>
-            <!--                <div th:case="'RATING'">-->
-            <!--                    <p th:for="${sq.id}" th:text="${sq.question}"></p>-->
-            <!--                    <th:block th:each="i: ${#numbers.sequence(1, 5)}">-->
-            <!--                        <label th:for="|${sq.id}-${i}|" th:text="${i}"></label>-->
-            <!--                        <input th:id="|${sq.id}-${i}|" th:name="${sq.id}" th:value="${i}" type="radio">-->
-            <!--                    </th:block>-->
-            <!--                </div>-->
+            <div th:case="'RATING'">
+                <b th:text="${sq.question}"></b>
+                <div>
+                    <div th:each="i: ${#numbers.sequence(1, 5)}" class="radio-box">
+                        <label th:for="|${sq.id}-${i}|" th:text="${i}"></label>
+                        <input th:id="|${sq.id}-${i}|" th:name="${sq.id}" th:value="${i}" type="radio">
+                    </div>
+                    <div class="radio-box">
+                        <label th:for="|${sq.id}-0|" th:text="No Answer"></label>
+                        <input th:id="|${sq.id}-0|" th:name="${sq.id}" th:value="" type="radio" checked>
+                    </div>
+                </div>
+            </div>
             <div th:case="*">
-                <p>This question cannot be shown.</p>
+                <p>This question type cannot be shown.</p>
             </div>
         </fieldset>
     </form>
@@ -72,11 +91,11 @@
             savedAnswers = JSON.parse(savedStatsAnswers)
 
         for (let i of inputs) {
-            if (i.type === "checkbox") {
-                savedAnswers.push({id: i.id, type: i.type, value: i.checked}
+            if (i.type === "radio") {
+                savedAnswers.push({id: i.name, type: i.type, value: i.value, checked: i.checked}
                 )
             } else {
-                savedAnswers.push({id: i.id, type: i.type, value: i.value}
+                savedAnswers.push({id: i.name, type: i.type, value: i.value, checked: undefined}
                 )
             }
         }
@@ -89,12 +108,13 @@
         let inputs = document.querySelectorAll("#stats-form input")
         // Fetch existing answers
         let savedAnswers = sessionStorage.getItem("SAVED_STATS_ANSWERS")
+        // Clear old answers
         sessionStorage.removeItem("SAVED_STATS_ANSWERS")
         if (!savedAnswers) return
         let answers = JSON.parse(savedAnswers)
         inputs.forEach((v, i) => {
-            if (v.type === "checkbox") {
-                v.checked = answers[i].value
+            if (v.type === "radio") {
+                v.checked = answers[i].checked
             } else {
                 v.value = answers[i].value
             }
@@ -112,24 +132,26 @@
 
         // Generate invisible form fields that will be sent to the server
         marketingAnswers.forEach(item => {
-            newHiddenAnswer(item.id, item.value, item.type, "marketing", form)
+            newHiddenAnswer(item.id, item.value, item.type, "marketing", form, item.checked)
         })
 
         statsAnswers.forEach(item => {
-            newHiddenAnswer(item.id, item.value, item.type, "stats", form)
+            newHiddenAnswer(item.id, item.value, item.type, "stats", form, item.checked)
         })
 
         document.getElementById("submit-form").submit()
     }
 
-    function newHiddenAnswer(id, value, type, prefix, form) {
+    function newHiddenAnswer(id, value, type, prefix, form, checked = undefined) {
         let newElem = document.createElement("input")
         newElem.hidden = true
         newElem.type = type
-        if (type === "checkbox")
-            newElem.setAttribute("checked", value)
-        else
+        if (type === "radio") {
+            newElem.setAttribute("checked", checked)
             newElem.setAttribute("value", value)
+        } else {
+            newElem.setAttribute("value", value)
+        }
         newElem.name = prefix + id
 
         form.appendChild(newElem)

@@ -14,11 +14,21 @@
 </div>
 <!-- This renders if there's no error message -->
 <div>
-    <form th:each="mq : ${marketing_questions}" id="marketing-form">
-        <fieldset th:switch="${mq.type.toString()}">
+    <p id="form-error"></p>
+    <form id="marketing-form">
+        <fieldset th:each="mq : ${marketing_questions}" th:switch="${mq.type.toString()}">
             <div th:case="'BOOL'">
-                <label th:for="${mq.id}" th:text="${mq.question}"></label>
-                <input th:id="${mq.id}" th:name="${mq.id}" type="checkbox" required>
+                <p th:text="${mq.question}"></p>
+                <div>
+                    <div class="radio-box">
+                        <label th:for="|${mq.id}-f|">False</label>
+                        <input type="radio" th:name="${mq.id}" th:id="|${mq.id}-f|" value="false" checked required>
+                    </div>
+                    <div class="radio-box">
+                        <label th:for="|${mq.id}-t|">True</label>
+                        <input type="radio" th:name="${mq.id}" th:id="|${mq.id}-t|" value="true" required>
+                    </div>
+                </div>
             </div>
             <div th:case="'STRING'">
                 <label th:for="${mq.id}" th:text="${mq.question}"></label>
@@ -28,42 +38,38 @@
                 <label th:for="${mq.id}" th:text="${mq.question}"></label>
                 <input th:id="${mq.id}" th:name="${mq.id}" type="number" required>
             </div>
-            <!--            <div th:case="'RATING'">-->
-            <!--                <p th:for="${mq.id}" th:text="${mq.question}"></p>-->
-            <!--                <th:block th:each="i: ${#numbers.sequence(1, 5)}">-->
-            <!--                    <label th:for="|${mq.id}-${i}|" th:text="${i}"></label>-->
-            <!--                    <input th:id="|${mq.id}-${i}|" th:name="${mq.id}" th:value="${i}" type="radio">-->
-            <!--                </th:block>-->
-            <!--            </div>-->
+            <div th:case="'RATING'">
+                <b th:text="${mq.question}"></b>
+                <div>
+                    <div th:each="i: ${#numbers.sequence(1, 5)}" class="radio-box">
+                        <label th:for="|${mq.id}-${i}|" th:text="${i}"></label>
+                        <input th:id="|${mq.id}-${i}|" th:name="${mq.id}" th:value="${i}" type="radio" required>
+                    </div>
+                </div>
+            </div>
             <div th:case="*">
-                <p>This question cannot be shown.</p>
+                <p>This question type cannot be shown.</p>
             </div>
         </fieldset>
-        <p id="form-error"></p>
+        <input type="submit" onclick="handleNext()" value="Next">
     </form>
 
     <div>
-        <a href="stats_questions" id="next">Next</a>
+        <a href="stats_questions" style="display: none;" id="next">Next</a>
     </div>
 </div>
 <script th:inline="javascript">
-    document.getElementById("next").addEventListener("click", e => handleNext(e))
-    function handleNext(e) {
+    function handleNext() {
         let isValid = true
-        let inputs = document.querySelectorAll("#marketing-form input")
-        inputs.forEach(i => {
-            if (i.value === undefined || i.value === "")
+        document.querySelectorAll("#marketing-form input").forEach(i => {
+            if (i.value === undefined || i.value === "") {
                 isValid = false
+            }
         })
-
-        if (!isValid) {
-            e.preventDefault()
-            document.getElementById("form-error").innerHTML = "Please fill all form fields!"
-            return false
-        }
+        if (!isValid) return
 
         saveAnswers()
-        return true
+        document.getElementById("next").click()
     }
 
     function saveAnswers() {
@@ -77,17 +83,18 @@
             savedAnswers = JSON.parse(savedMarketingAnswers)
 
         for (let i of inputs) {
-            if (i.type === "checkbox") {
+            if (i.type === "radio") {
                 savedAnswers.push(
-                    {id: i.id, type: i.type, value: i.checked}
+                    {id: i.name, type: i.type, value: i.value, checked: i.checked}
                 )
             } else {
                 savedAnswers.push(
-                    {id: i.id, type: i.type, value: i.value}
+                    {id: i.name, type: i.type, value: i.value, checked: undefined}
                 )
             }
         }
 
+        console.log(savedAnswers)
         sessionStorage.setItem("SAVED_MARKETING_ANSWERS", JSON.stringify(savedAnswers))
     }
 
@@ -100,8 +107,8 @@
         if (!savedAnswers) return
         let answers = JSON.parse(savedAnswers)
         inputs.forEach((v, i) => {
-            if (v.type === "checkbox") {
-                v.checked = answers[i].value
+            if (v.type === "radio") {
+                v.checked = answers[i].checked
             } else {
                 v.value = answers[i].value
             }
