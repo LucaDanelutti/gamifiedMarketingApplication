@@ -22,15 +22,13 @@ public class LoginLog implements Serializable {
 	@Id
 	private Date timestamp;
 
-
-
 	@Id
 	@ManyToOne
 	@JoinColumn(name= "user_id")
 	private User user;
 
-	int compilation_requested;
-	int compilation_completed;
+	Boolean compilation_requested;
+	Boolean compilation_completed;
 
 
 	//CONSTRUCTOR
@@ -40,24 +38,24 @@ public class LoginLog implements Serializable {
 	public LoginLog(User user, Date timestamp){
 		this.user=user;
 		this.timestamp=timestamp;
-		this.compilation_completed=0;
-		this.compilation_requested=0;
+		this.compilation_completed = false;
+		this.compilation_requested = false;
 		user.addNewLog(this);
 	}
 
 
 	//GETTER & SETTERS
 
-	public int getCompilation_requested() {
+	public Boolean getCompilation_requested() {
 		return compilation_requested;
 	}
-	public void setCompilation_requested(int compilation_requested) {
+	public void setCompilation_requested(Boolean compilation_requested) {
 		this.compilation_requested = compilation_requested;
 	}
-	public int getCompilation_completed() {
+	public Boolean getCompilation_completed() {
 		return compilation_completed;
 	}
-	public void setCompilation_completed(int compilation_completed) {
+	public void setCompilation_completed(Boolean compilation_completed) {
 		this.compilation_completed = compilation_completed;
 	}
 	public Date getTimestamp() {

@@ -28,7 +28,7 @@ public class User implements Serializable {
 
 	private int isAdmin;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private List<LoginLog> logs;
 
 	//EMPTY
@@ -81,6 +81,8 @@ public class User implements Serializable {
 	public void setBanned(Boolean banned) {
 		this.banned = banned;
 	}
+
+	public LoginLog getLastLog() { return logs.get(logs.size()-1);}
 
 	public List<LoginLog> getLogs() {
 		return logs;

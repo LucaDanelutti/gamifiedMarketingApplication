@@ -46,4 +46,13 @@ public class UserService {
 		em.merge(user);
 	}
 
+	public void setCompilationRequested(User user) {
+		user.getLastLog().setCompilation_requested(true);
+		em.merge(user);
+	}
+
+	public void setCompilationCompleted(User user) {
+		user.getLastLog().setCompilation_completed(true);
+		em.merge(user);
+	}
 }
