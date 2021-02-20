@@ -51,25 +51,16 @@
                 <p>This question type cannot be shown.</p>
             </div>
         </fieldset>
-        <input type="submit" onclick="handleNext()" value="Next">
+<!--        <input type="submit" onclick="handleNext()" value="Next">-->
     </form>
 
     <div>
-        <a href="stats_questions" style="display: none;" id="next">Next</a>
+        <a href="stats_questions" id="next" onclick="handleNext()">Next</a>
     </div>
 </div>
 <script th:inline="javascript">
     function handleNext() {
-        let isValid = true
-        document.querySelectorAll("#marketing-form input").forEach(i => {
-            if (i.value === undefined || i.value === "") {
-                isValid = false
-            }
-        })
-        if (!isValid) return
-
         saveAnswers()
-        document.getElementById("next").click()
     }
 
     function saveAnswers() {
