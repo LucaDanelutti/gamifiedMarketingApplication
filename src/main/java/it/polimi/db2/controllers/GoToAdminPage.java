@@ -1,10 +1,8 @@
 package it.polimi.db2.controllers;
 
 import it.polimi.db2.application.entities.User;
-import it.polimi.db2.application.services.AdminService;
 import org.thymeleaf.context.WebContext;
 
-import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +13,6 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/admin")
 public class GoToAdminPage extends HttpServlet {
 
-	@EJB(name = "it.polimi.db2.application.services/AdminService")
-	private AdminService adminService;
 
 	public GoToAdminPage() {
 		super();

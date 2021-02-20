@@ -4,6 +4,7 @@ import it.polimi.db2.application.entities.*;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,5 +60,15 @@ public class QuestionnaireService {
             }
         }
         return true;
+    }
+
+    public void createQuestionnaire(String name, byte [] image, Date date, List<Review> reviews){
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setName(name);
+        questionnaire.addReview(new Review("Test Review 1"));
+        questionnaire.addReview(new Review("Test Review 2"));
+        questionnaire.setDate(date);
+        questionnaire.setImage(image);
+        em.persist(questionnaire);
     }
 }

@@ -16,8 +16,11 @@ public class Questionnaire implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @Basic(fetch = FetchType.LAZY)
+    @Lob
+    private byte[] image;
 
-    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Collection<Review> reviews;
 
     @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER)
@@ -51,7 +54,28 @@ public class Questionnaire implements Serializable {
         q.setQuestionnaire(this);
     }
 
+    public void addReview(Review review){
+        review.setQuestionnaire(this);
+        this.reviews.add(review);
+    }
+
     public int getId() {
         return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

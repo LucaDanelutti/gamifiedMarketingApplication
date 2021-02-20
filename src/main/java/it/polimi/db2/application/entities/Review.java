@@ -17,6 +17,9 @@ public class Review {
 
     public Review() {
     }
+    public Review(String value){
+        this.value=value;
+    }
 
     public Questionnaire getQuestionnaire() {
         return questionnaire;
