@@ -56,10 +56,10 @@ public class QuestionnaireService {
         List<OffensiveWord> words = em.createNamedQuery("OffensiveWord.findAll", OffensiveWord.class).getResultList();
         for (String value: values) {
             for (OffensiveWord word: words) {
-                if (value.toLowerCase().contains(word.getWord().toLowerCase())) return false;
+                if (value.toLowerCase().contains(word.getWord().toLowerCase())) return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void createQuestionnaire(String name, byte [] image, Date date, List<Review> reviews){
