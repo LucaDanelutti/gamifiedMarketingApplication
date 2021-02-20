@@ -21,6 +21,10 @@ fieldset {
     display: block;
 }
 
+.radio-box {
+    display: inline-block;
+}
+
 .button {
     border: 1px solid black;
     padding: 0.25em 1em;
