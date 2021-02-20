@@ -2,6 +2,7 @@ package it.polimi.db2.application.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class Questionnaire implements Serializable {
     private byte[] image;
 
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Collection<Review> reviews;
+    private Collection<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER)
     private Collection<MarketingQuestion> marketingQuestions;
