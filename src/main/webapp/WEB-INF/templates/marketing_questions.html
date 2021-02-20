@@ -14,35 +14,103 @@
 </div>
 <!-- This renders if there's no error message -->
 <div>
-    <div>
-        <div th:each="mq,status : ${marketing_questions}">
-            <th:block th:switch="${mq.type}">
-                <div th:case="'BOOL'">
-                    <label th:for="${status.index}" th:text="${mq.question}"></label>
-                    <input th:id="${status.index}" th:name="${status.index}" type="checkbox">
-                </div>
-                <div th:case="'STRING'">
-                    <label th:for="${status.index}" th:text="${mq.question}"></label>
-                    <input th:id="${status.index}" th:name="${status.index}" type="text">
-                </div>
-                <div th:case="'NUMBER'">
-                    <label th:for="${status.index}" th:text="${mq.question}"></label>
-                    <input th:id="${status.index}" th:name="${status.index}" type="number">
-                </div>
-                <div th:case="'RATING'">
-                    <p th:for="${status.index}" th:text="${mq.question}"></p>
-                    <th:block th:each="i: ${#numbers.sequence(1, 5)}">
-                        <label th:for="|${status.index}-${i}|" th:text="${i}"></label>
-                        <input th:id="|${status.index}-${i}|" th:name="${status.index}" th:value="${i}" type="radio">
-                    </th:block>
-                </div>
-            </th:block>
-        </div>
+    <form th:each="mq : ${marketing_questions}" id="marketing-form">
+        <fieldset th:switch="${mq.type.toString()}">
+            <div th:case="'BOOL'">
+                <label th:for="${mq.id}" th:text="${mq.question}"></label>
+                <input th:id="${mq.id}" th:name="${mq.id}" type="checkbox" required>
+            </div>
+            <div th:case="'STRING'">
+                <label th:for="${mq.id}" th:text="${mq.question}"></label>
+                <input th:id="${mq.id}" th:name="${mq.id}" type="text" required>
+            </div>
+            <div th:case="'NUMBER'">
+                <label th:for="${mq.id}" th:text="${mq.question}"></label>
+                <input th:id="${mq.id}" th:name="${mq.id}" type="number" required>
+            </div>
+            <!--            <div th:case="'RATING'">-->
+            <!--                <p th:for="${mq.id}" th:text="${mq.question}"></p>-->
+            <!--                <th:block th:each="i: ${#numbers.sequence(1, 5)}">-->
+            <!--                    <label th:for="|${mq.id}-${i}|" th:text="${i}"></label>-->
+            <!--                    <input th:id="|${mq.id}-${i}|" th:name="${mq.id}" th:value="${i}" type="radio">-->
+            <!--                </th:block>-->
+            <!--            </div>-->
+            <div th:case="*">
+                <p>This question cannot be shown.</p>
+            </div>
+        </fieldset>
+        <p id="form-error"></p>
+    </form>
 
-        <div>
-            <a href="stats_questions">Next</a>
-        </div>
+    <div>
+        <a href="stats_questions" id="next">Next</a>
     </div>
 </div>
+<script th:inline="javascript">
+    document.getElementById("next").addEventListener("click", e => handleNext(e))
+    function handleNext(e) {
+        let isValid = true
+        let inputs = document.querySelectorAll("#marketing-form input")
+        inputs.forEach(i => {
+            if (i.value === undefined || i.value === "")
+                isValid = false
+        })
+
+        if (!isValid) {
+            e.preventDefault()
+            document.getElementById("form-error").innerHTML = "Please fill all form fields!"
+            return false
+        }
+
+        saveAnswers()
+        return true
+    }
+
+    function saveAnswers() {
+        console.log("Saving answers...")
+        let inputs = document.querySelectorAll("#marketing-form input")
+        let savedAnswers
+        let savedMarketingAnswers = sessionStorage.getItem("SAVED_MARKETING_ANSWERS")
+        if (!savedMarketingAnswers)
+            savedAnswers = []
+        else
+            savedAnswers = JSON.parse(savedMarketingAnswers)
+
+        for (let i of inputs) {
+            if (i.type === "checkbox") {
+                savedAnswers.push(
+                    {id: i.id, type: i.type, value: i.checked}
+                )
+            } else {
+                savedAnswers.push(
+                    {id: i.id, type: i.type, value: i.value}
+                )
+            }
+        }
+
+        sessionStorage.setItem("SAVED_MARKETING_ANSWERS", JSON.stringify(savedAnswers))
+    }
+
+    function fillAnswers() {
+        console.log("Filling answers...")
+        let inputs = document.querySelectorAll("#marketing-form input")
+        // Fetch existing answers
+        let savedAnswers = sessionStorage.getItem("SAVED_MARKETING_ANSWERS")
+        sessionStorage.removeItem("SAVED_MARKETING_ANSWERS")
+        if (!savedAnswers) return
+        let answers = JSON.parse(savedAnswers)
+        inputs.forEach((v, i) => {
+            if (v.type === "checkbox") {
+                v.checked = answers[i].value
+            } else {
+                v.value = answers[i].value
+            }
+        })
+    }
+
+    // On page load
+    fillAnswers()
+</script>
+
 </body>
 </html>

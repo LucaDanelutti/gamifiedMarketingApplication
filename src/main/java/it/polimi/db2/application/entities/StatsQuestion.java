@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "stats_marketing", schema = "marketing_application")
+@Table(name = "questions_stats", schema = "marketing_application")
 @NamedQuery(name = "StatsQuestion.findAll", query = "SELECT q FROM StatsQuestion q")
 public class StatsQuestion {
     @Id
@@ -19,6 +19,18 @@ public class StatsQuestion {
     private List<StatsReply> replies;
 
     public StatsQuestion() {
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public QuestionType getType() {
+        return type;
     }
 
     public void addReply(StatsReply reply) {

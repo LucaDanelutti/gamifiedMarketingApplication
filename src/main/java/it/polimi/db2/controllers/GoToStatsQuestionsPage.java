@@ -1,18 +1,24 @@
 package it.polimi.db2.controllers;
 
+import it.polimi.db2.application.entities.StatsQuestion;
 import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.services.QuestionnaireService;
 import org.thymeleaf.context.WebContext;
 
+import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/stats_questions")
 public class GoToStatsQuestionsPage extends HttpServlet {
+
+	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
+	private QuestionnaireService qService;
 
 	public GoToStatsQuestionsPage() {
 		super();
@@ -42,9 +48,8 @@ public class GoToStatsQuestionsPage extends HttpServlet {
 
 		//Retrieve the questionnaire of the day
 		try {
-//			ArrayList<Stats_Questions> stats_questions = new ArrayList<>();
-
-//			ctx.setVariable("statistical_questions", stats_questions);
+			List<StatsQuestion> statsQuestions = qService.getStatsQuestions();
+			ctx.setVariable("stats_questions", statsQuestions);
 		} catch (Exception e) {
 			ctx.setVariable("errorMsg", "Couldn't retrieve statistical questions!");
 		} finally {
