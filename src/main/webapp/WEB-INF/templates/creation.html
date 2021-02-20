@@ -16,7 +16,8 @@
 </div>
 <!-- This renders if there's no error message -->
 <div th:unless="${errorMsg}">
-    <form method="post" action="CreateQuestionnaire">
+
+    <form method="post"  action="CreateQuestionnaire" enctype="multipart/form-data">
         <fieldset>
             <legend>Questionnaire Data</legend>
             <label for="product-name">Product name</label>
@@ -26,9 +27,10 @@
             <label for="product-image">Product image</label>
             <input id="product-image" name="product-image" type="file">
             <br>
-            <input type="submit" value="Create questionnaire">
+            <input type="submit" name="Create questionnaire" value="Create">
         </fieldset>
     </form>
+
     <form>
         <fieldset>
             <legend>Marketing Questions</legend>
@@ -40,6 +42,8 @@
             </ul>
         </fieldset>
     </form>
+
+
     <form method="post" action="CreateQuestion">
         <fieldset>
             <legend>New Marketing Question</legend>
@@ -55,6 +59,7 @@
             <input type="submit" value="Create">
         </fieldset>
     </form>
+
 </div>
 </body>
 </html>
