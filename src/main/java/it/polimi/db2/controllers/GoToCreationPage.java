@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/admin")
-public class GoToAdminPage extends HttpServlet {
+@WebServlet(urlPatterns = "/adminCreate")
+public class GoToCreationPage extends HttpServlet {
 
 
-	public GoToAdminPage() {
+	public GoToCreationPage() {
 		super();
 	}
 
@@ -39,6 +39,6 @@ public class GoToAdminPage extends HttpServlet {
 			return;
 		}
 
-		Thymeleaf.render("admin", ctx);
+		Thymeleaf.render("creation", ctx);
 	}
 }

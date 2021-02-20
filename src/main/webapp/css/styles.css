@@ -8,6 +8,19 @@ table {
     padding: 0.5em;
 }
 
+form {
+    max-width: 420px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+fieldset {
+    display: block;
+}
+
 .button {
     border: 1px solid black;
     padding: 0.25em 1em;

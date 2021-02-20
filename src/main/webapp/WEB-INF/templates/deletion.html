@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Admin - Delete</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>Admin Panel</h1>
+<h1>Delete questionnaire</h1>
 <p th:text="${'Nice to see you again ' + session.user.username}"></p>
 
 <!--Show Error if there's an error -->
@@ -17,13 +17,13 @@
 <div th:unless="${errorMsg}">
     <ul>
         <li>
-            <a href="adminCreate">Create</a>
+            <a href="admin/create">Create</a>
         </li>
         <li>
-            <a href="adminInspect">Inspect</a>
+            <a href="admin/inspect">Inspect</a>
         </li>
         <li>
-            <a href="adminDelete">Delete</a>
+            <a href="admin/delete">Delete</a>
         </li>
     </ul>
 </div>

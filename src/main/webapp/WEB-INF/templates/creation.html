@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Create</title>
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>Create questionnaire</h1>
+<p>
+    <a href="admin">Back to Admin Panel</a>
+</p>
+<!--Show Error if there's an error -->
+<div th:if="${errorMsg}">
+    <p th:text="${errorMsg}"></p>
+</div>
+<!-- This renders if there's no error message -->
+<div th:unless="${errorMsg}">
+    <form method="post" action="CreateQuestionnaire">
+        <fieldset>
+            <legend>Questionnaire Data</legend>
+            <label for="product-name">Product name</label>
+            <input id="product-name" name="product-name" type="text" placeholder="Teapot MK.1">
+            <label for="product-date">Questionnaire day</label>
+            <input id="product-date" name="product-date" type="date">
+            <label for="product-image">Product image</label>
+            <input id="product-image" name="product-image" type="file">
+            <br>
+            <input type="submit" value="Create questionnaire">
+        </fieldset>
+    </form>
+    <form>
+        <fieldset>
+            <legend>Marketing Questions</legend>
+            <ul th:each="mq : ${marketing_questions}">
+                <li th:id="${mq.id}">
+                    <span th:text="${mq.question}"></span>
+                    <span th:text="${mq.type.toString()}"></span>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+    <form method="post" action="CreateQuestion">
+        <fieldset>
+            <legend>New Marketing Question</legend>
+            <label for="question-text">Text</label>
+            <input type="text" placeholder="Do you like this?" id="question-text" name="question-text">
+            <label for="question-type">Type</label>
+            <select id="question-type" name="question-type">
+                <option value="0">Boolean</option>
+                <option value="1">String</option>
+                <option value="2">Number</option>
+            </select>
+            <input type="submit" value="Create">
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
