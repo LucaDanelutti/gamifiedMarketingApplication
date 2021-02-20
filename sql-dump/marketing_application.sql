@@ -7,7 +7,7 @@
 #
 # Host: aws3.remote.lucadanelutti.it (MySQL 5.7.32)
 # Database: marketing_application
-# Generation Time: 2021-02-20 11:45:26 +0000
+# Generation Time: 2021-02-20 18:03:01 +0000
 # ************************************************************
 
 
@@ -26,7 +26,7 @@
 DROP TABLE IF EXISTS `login_logs`;
 
 CREATE TABLE `login_logs` (
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `timestamp` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   `user_id` int(10) unsigned NOT NULL,
   `compilation_requested` tinyint(1) NOT NULL,
   `compilation_completed` tinyint(1) NOT NULL,
@@ -40,18 +40,7 @@ LOCK TABLES `login_logs` WRITE;
 
 INSERT INTO `login_logs` (`timestamp`, `user_id`, `compilation_requested`, `compilation_completed`)
 VALUES
-	('2021-02-20 09:44:26',1,0,0),
-	('2021-02-20 09:50:59',1,0,0),
-	('2021-02-20 10:05:16',3,0,0),
-	('2021-02-20 10:06:16',3,0,0),
-	('2021-02-20 10:12:09',3,0,0),
-	('2021-02-20 10:15:03',3,0,0),
-	('2021-02-20 10:18:42',3,0,0),
-	('2021-02-20 10:22:12',3,0,0),
-	('2021-02-20 10:23:55',3,0,0),
-	('2021-02-20 10:25:18',3,0,0),
-	('2021-02-20 11:43:44',3,0,0),
-	('2021-02-20 11:44:34',1,0,0);
+	('2021-02-20 17:59:25.813',1,1,0);
 
 /*!40000 ALTER TABLE `login_logs` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -91,7 +80,7 @@ CREATE TABLE `product_reviews` (
   PRIMARY KEY (`id`),
   KEY `questionnaire_id` (`questionnaire_id`),
   CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaires` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `product_reviews` WRITE;
 /*!40000 ALTER TABLE `product_reviews` DISABLE KEYS */;
@@ -119,7 +108,7 @@ CREATE TABLE `questionnaires` (
   `date` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `date` (`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `questionnaires` WRITE;
 /*!40000 ALTER TABLE `questionnaires` DISABLE KEYS */;
@@ -146,7 +135,7 @@ CREATE TABLE `questions_marketing` (
   PRIMARY KEY (`id`),
   KEY `questionnaire_id` (`questionnaire_id`),
   CONSTRAINT `questions_marketing_ibfk_1` FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaires` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `questions_marketing` WRITE;
 /*!40000 ALTER TABLE `questions_marketing` DISABLE KEYS */;
@@ -171,7 +160,7 @@ CREATE TABLE `questions_stats` (
   `question` varchar(256) NOT NULL DEFAULT '',
   `type` enum('BOOL','STRING','NUMBER','RATING') NOT NULL DEFAULT 'STRING',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `questions_stats` WRITE;
 /*!40000 ALTER TABLE `questions_stats` DISABLE KEYS */;
@@ -201,15 +190,6 @@ CREATE TABLE `replies_marketing` (
   CONSTRAINT `replies_marketing_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `replies_marketing` WRITE;
-/*!40000 ALTER TABLE `replies_marketing` DISABLE KEYS */;
-
-INSERT INTO `replies_marketing` (`questions_marketing_id`, `user_id`, `value`)
-VALUES
-	(1,1,'bella');
-
-/*!40000 ALTER TABLE `replies_marketing` ENABLE KEYS */;
-UNLOCK TABLES;
 
 DELIMITER ;;
 /*!50003 SET SESSION SQL_MODE="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" */;;
@@ -279,7 +259,7 @@ INSERT INTO `scores` (`questionnaire_id`, `user_id`, `score`)
 VALUES
 	(1,1,4),
 	(1,2,3),
-	(2,1,1);
+	(2,1,39);
 
 /*!40000 ALTER TABLE `scores` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -298,7 +278,7 @@ CREATE TABLE `users` (
   `banned` float NOT NULL DEFAULT '0',
   `isAdmin` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
