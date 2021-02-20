@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Inspect</title>
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>Inspect questionnaire</h1>
+<p>
+    <a href="adminInspect">Back to questionnaires list</a>
+</p>
+
+<!--Show Error if there's an error -->
+<div th:if="${errorMsg}">
+    <p th:text="${errorMsg}"></p>
+</div>
+<!-- This renders if there's no error message -->
+<div th:unless="${errorMsg}">
+    <div>
+        <fieldset>
+            <legend>Users who submitted the questionnaire</legend>
+            <ul>
+                <li th:each="u : ${users_submit}" th:text="${u.username}"></li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>Users who cancelled the questionnaire</legend>
+            <ul>
+                <li th:each="u : ${users_cancel}" th:text="${u.username}"></li>
+            </ul>
+        </fieldset>
+    </div>
+    <div>
+        <fieldset>
+            <legend>Answers</legend>
+            <fieldset th:each="q : ${questions}">
+                <p th:text="${q.question}"></p>
+                <ul>
+                    <li th:each="a : ${q.answers}" th:text="a.value"></li>
+                </ul>
+            </fieldset>
+        </fieldset>
+    </div>
+</div>
+</body>
+</html>

@@ -7,7 +7,9 @@
 </head>
 <body>
 <h1>Delete questionnaire</h1>
-<p th:text="${'Nice to see you again ' + session.user.username}"></p>
+<p>
+    <a href="admin">Back to Admin Panel</a>
+</p>
 
 <!--Show Error if there's an error -->
 <div th:if="${errorMsg}">
@@ -15,17 +17,29 @@
 </div>
 <!-- This renders if there's no error message -->
 <div th:unless="${errorMsg}">
-    <ul>
-        <li>
-            <a href="admin/create">Create</a>
-        </li>
-        <li>
-            <a href="admin/inspect">Inspect</a>
-        </li>
-        <li>
-            <a href="admin/delete">Delete</a>
-        </li>
-    </ul>
+    <table>
+        <thead>
+        <tr>
+            <td>
+                Questionnaires
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Link</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="q : ${questionnaires}">
+            <td th:text="${q.name}">Name</td>
+            <td th:text="${q.date}">Date</td>
+            <td>
+                <a th:href="|adminDelete?id=${q.id}|">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
