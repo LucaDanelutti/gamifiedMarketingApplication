@@ -6,9 +6,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.NonUniqueResultException;
 
-import it.polimi.db2.application.entities.Login_Log;
+import it.polimi.db2.application.entities.LoginLog;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.exceptions.*;
+
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -31,10 +33,17 @@ public class UserService {
 		else if (uList.size() == 1) {
 			User user = uList.get(0);
 
-			//TODO: create new login log for the user
+			LoginLog log = new LoginLog(user, new Date(System.currentTimeMillis()));
+			em.persist(log);
+
 			return user;
 		}
 		throw new NonUniqueResultException("More than one user registered with same credentials");
+	}
+
+	public void banUser(User user) {
+		user.setBanned(true);
+		em.merge(user);
 	}
 
 }

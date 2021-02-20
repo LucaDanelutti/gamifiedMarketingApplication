@@ -40,15 +40,14 @@ public class GoToHomePage extends HttpServlet {
 		// Get servlet context
 		final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
 
-		//Set user logs to ctx variable
-		/*
-			try {
 
-				ctx.setVariable("logs", user.getLogs());
-			}catch (Exception e ){
-				ctx.setVariable("errorMsg", "Unable to retrieve logs!");
-			}
-		*/
+		//Set user logs to ctx variable
+		try {
+			ctx.setVariable("logs", user.getLogs());
+		}catch (Exception e ){
+			ctx.setVariable("errorMsg", "Unable to retrieve logs!");
+		}
+
 
 		//If the user is banned redirect to the banned page
 		if (user.getBanned()) {

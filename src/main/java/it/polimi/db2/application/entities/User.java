@@ -22,17 +22,22 @@ public class User implements Serializable {
 	private String email;
 	private Boolean banned;
 
+	public int getIsAdmin() {
+		return isAdmin;
+	}
+
+	private int isAdmin;
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	private List<Login_Log> logs;
+	private List<LoginLog> logs;
 
 	//EMPTY
 	public User() {
 	}
 
 	//METHODS
-	public void addNewLog(Login_Log log){
+	public void addNewLog(LoginLog log){
 		logs.add(log);
-		log.setUser(this);
 	}
 
 
@@ -77,11 +82,11 @@ public class User implements Serializable {
 		this.banned = banned;
 	}
 
-	public List<Login_Log> getLogs() {
+	public List<LoginLog> getLogs() {
 		return logs;
 	}
 
-	public void setLogs(List<Login_Log> logs) {
+	public void setLogs(List<LoginLog> logs) {
 		this.logs = logs;
 	}
 }
