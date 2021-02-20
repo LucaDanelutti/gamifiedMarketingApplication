@@ -4,6 +4,8 @@ import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.Questionnaire;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
+import it.polimi.db2.application.services.UserService;
+import org.apache.commons.lang.time.DateUtils;
 import org.thymeleaf.context.WebContext;
 
 import javax.ejb.EJB;
@@ -20,6 +22,9 @@ public class GoToHomePage extends HttpServlet {
 
 	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
 	private QuestionnaireService qService;
+
+	@EJB(name = "it.polimi.db2.application.services/UserService")
+	private UserService uService;
 
 	public GoToHomePage() {
 		super();
@@ -60,6 +65,7 @@ public class GoToHomePage extends HttpServlet {
 		try {
 			Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
 			ctx.setVariable("questionnaire", questionnaire);
+			ctx.setVariable("compilationEnabled", !checkCompilation(user));
 		} catch (Exception e) {
 			ctx.setVariable("errorMsg", "Couldn't retrieve questionnaire of the day!");
 		} finally {
@@ -69,5 +75,12 @@ public class GoToHomePage extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		doGet(request, response); // Redirecting post to gets?
+	}
+
+	private Boolean checkCompilation(User user) {
+		if (DateUtils.isSameDay(user.getLastLog().getTimestamp(), new java.util.Date(System.currentTimeMillis()))) {
+			return user.getLastLog().getCompilation_completed();
+		}
+		return false;
 	}
 }
