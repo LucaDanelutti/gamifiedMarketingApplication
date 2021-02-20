@@ -50,7 +50,7 @@ public class GoToMarketingQuestionsPage extends HttpServlet {
 			return;
 		}
 
-		//uService.setCompilationRequested(user);
+		uService.setCompilationRequested(user);
 
 		//Retrieve the questionnaire of the day
 		try {

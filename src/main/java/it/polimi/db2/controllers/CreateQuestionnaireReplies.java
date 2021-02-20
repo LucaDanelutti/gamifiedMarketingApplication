@@ -96,7 +96,7 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             response.sendRedirect(greetingsPath);
         }
 
-        //uService.setCompilationCompleted(user);
+        uService.setCompilationCompleted(user);
     }
 
     public void destroy() {

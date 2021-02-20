@@ -16,5 +16,8 @@
         <class>it.polimi.db2.application.entities.Score</class>
         <class>it.polimi.db2.application.entities.OffensiveWord</class>
         <class>it.polimi.db2.application.entities.LoginLog</class>
+        <properties>
+            <property name="eclipselink.logging.level" value="FINE" />
+        </properties>
     </persistence-unit>
 </persistence>
