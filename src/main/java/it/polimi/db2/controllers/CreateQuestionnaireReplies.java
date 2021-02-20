@@ -3,6 +3,7 @@ package it.polimi.db2.controllers;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
 import it.polimi.db2.application.services.UserService;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 
 import javax.ejb.EJB;
@@ -13,8 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @WebServlet("/CreateQuestionnaireReplies")
 public class CreateQuestionnaireReplies extends HttpServlet {
@@ -53,11 +53,32 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             return;
         }
 
-        //TODO: parse data
+        Map<String, String> requestContent = new HashMap<>();
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String[] paramValues = request.getParameterValues(paramName);
+            for (int i = 0; i < paramValues.length; i++) {
+                String paramValue = paramValues[i];
+                requestContent.put(paramName, paramValue);
+            }
+        }
 
-        List<String> marketingReplies = new ArrayList<>();
-        List<String> statsReplies = new ArrayList<>();
+        Map<Integer, String> marketingReplies = new HashMap<>();
+        Map<Integer, String> statsReplies = new HashMap<>();
         List<String> values = new ArrayList<>();
+        for (String key: requestContent.keySet()) {
+            if (key.contains("marketing")) {
+                marketingReplies.put(Integer.parseInt(key.split("marketing")[1]), requestContent.get(key));
+                values.add(requestContent.get(key));
+            } else if (key.contains("stats")) {
+                if (!requestContent.get(key).equals("")) {
+                    statsReplies.put(Integer.parseInt(key.split("stats")[1]), requestContent.get(key));
+                    values.add(requestContent.get(key));
+                }
+            }
+        }
+
         Boolean toBan = qService.checkReplies(values);
         if (toBan) {
             uService.banUser(user);
@@ -65,15 +86,17 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             response.sendRedirect(bannedPath);
         }
         else {
-            for (String reply : marketingReplies) {
-                qService.addMarketingReply(reply, 1, user);
+            for (int replyId : marketingReplies.keySet()) {
+                qService.addMarketingReply(marketingReplies.get(replyId), replyId, user);
             }
-            for (String reply : statsReplies) {
-                qService.addStatsReply(reply, 1, 1, user);
+            for (int replyId : statsReplies.keySet()) {
+                qService.addStatsReply(statsReplies.get(replyId), replyId, qService.getQuestionnaireOfTheDay().getId(), user);
             }
             String greetingsPath = getServletContext().getContextPath() + "/greetings";
             response.sendRedirect(greetingsPath);
         }
+
+        //uService.setCompilationCompleted(user);
     }
 
     public void destroy() {

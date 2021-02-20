@@ -3,6 +3,7 @@ package it.polimi.db2.controllers;
 import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
+import it.polimi.db2.application.services.UserService;
 import org.thymeleaf.context.WebContext;
 
 import javax.ejb.EJB;
@@ -19,6 +20,9 @@ import java.util.List;
 public class GoToMarketingQuestionsPage extends HttpServlet {
 	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
 	private QuestionnaireService qService;
+
+	@EJB(name = "it.polimi.db2.application.services/UserService")
+	private UserService uService;
 
 	public GoToMarketingQuestionsPage() {
 		super();
@@ -45,6 +49,8 @@ public class GoToMarketingQuestionsPage extends HttpServlet {
 			response.sendRedirect(bannedPath);
 			return;
 		}
+
+		//uService.setCompilationRequested(user);
 
 		//Retrieve the questionnaire of the day
 		try {
