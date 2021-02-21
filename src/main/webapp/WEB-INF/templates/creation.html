@@ -19,7 +19,7 @@
 
     <form method="post"  action="CreateQuestionnaire" enctype="multipart/form-data">
         <fieldset>
-            <legend>Questionnaire Data</legend>
+            <legend>Create New Questionnaire</legend>
             <label for="product-name">Product name</label>
             <input id="product-name" name="product-name" type="text" placeholder="Teapot MK.1">
             <label for="product-date">Questionnaire day</label>
@@ -31,22 +31,15 @@
         </fieldset>
     </form>
 
-    <form>
+    <form method="post" action="CreateMarketingQuestion">
         <fieldset>
-            <legend>Marketing Questions</legend>
-            <ul th:each="mq : ${marketing_questions}">
-                <li th:id="${mq.id}">
-                    <span th:text="${mq.question}"></span>
-                    <span th:text="${mq.type.toString()}"></span>
-                </li>
-            </ul>
-        </fieldset>
-    </form>
+            <legend>Add New Marketing Question</legend>
+            <label for="question-questionnaireID">Select Questionnaire</label>
+            <select name="question-questionnaireID" id="question-questionnaireID">
+                <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
+                </option>
+            </select>
 
-
-    <form method="post" action="CreateQuestion">
-        <fieldset>
-            <legend>New Marketing Question</legend>
             <label for="question-text">Text</label>
             <input type="text" placeholder="Do you like this?" id="question-text" name="question-text">
             <label for="question-type">Type</label>
@@ -56,7 +49,22 @@
                 <option value="2">Number</option>
                 <option value="3">Rating</option>
             </select>
+
             <input type="submit" value="Create">
+        </fieldset>
+    </form>
+
+    <form method="post" action="EnableQuestionnaire">
+        <fieldset>
+            <legend>Enable Questionnaire</legend>
+            <legend>Select Questionnaire</legend>
+
+            <select name="toBeEnabledId" id="ToBeEnabledId">
+                <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
+                </option>
+            </select>
+
+            <input type="submit" value="Enable">
         </fieldset>
     </form>
 
