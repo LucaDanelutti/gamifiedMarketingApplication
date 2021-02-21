@@ -1,18 +1,23 @@
 package it.polimi.db2.controllers;
 
+import it.polimi.db2.application.entities.Questionnaire;
 import it.polimi.db2.application.entities.User;
+import it.polimi.db2.application.services.QuestionnaireService;
 import org.thymeleaf.context.WebContext;
 
+import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = "/adminDelete")
 public class GoToDeletionPage extends HttpServlet {
-
+	@EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
+	private QuestionnaireService questionnaireService;
 
 	public GoToDeletionPage() {
 		super();
@@ -39,6 +44,36 @@ public class GoToDeletionPage extends HttpServlet {
 			return;
 		}
 
-		Thymeleaf.render("deletion", ctx);
+		String idString;
+		ArrayList<Questionnaire> questionnaires;
+		try {
+			idString = request.getParameter("id");
+			if(idString==null){
+				questionnaires=questionnaireService.getAllPreviousQuestionnaires();
+				ctx.setVariable("questionnaires", questionnaires);
+				Thymeleaf.render("deletion", ctx);
+			}
+			else{
+				questionnaires=questionnaireService.getAllPreviousQuestionnaires();
+				for (Questionnaire q: questionnaires) {
+					if(q.getId()==Integer.parseInt(idString)){
+						questionnaireService.deleteQuestionnaire(Integer.parseInt(idString));
+						String path = getServletContext().getContextPath() + "/adminDelete";
+						response.sendRedirect(path);
+					}
+				}
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error in deleting ");
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			//response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+			return;
+		}
+
+
+
+
 	}
 }
