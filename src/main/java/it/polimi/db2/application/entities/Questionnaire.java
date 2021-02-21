@@ -10,6 +10,8 @@ import java.util.Date;
 @Table(name = "questionnaires", schema = "marketing_application")
 @NamedQuery(name = "Questionnaire.getQuestionnaireOfTheDay", query = "Select q from Questionnaire q where q.date = ?1 and q.isEnabled = 1")
 @NamedQuery(name = "Questionnaire.getNotEnabledQuestionnaires", query = "Select q from Questionnaire q where q.isEnabled = 0 and q.date >= ?1")
+@NamedQuery(name = "Questionnaire.getAllPrevious", query = "Select q from Questionnaire q where q.date < ?1")
+
 public class Questionnaire implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

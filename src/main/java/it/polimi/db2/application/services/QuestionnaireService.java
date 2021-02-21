@@ -35,6 +35,17 @@ public class QuestionnaireService {
         questionnaire.setIsEnabled(1);
     }
 
+    public void deleteQuestionnaire(int id){
+        Questionnaire questionnaire = em.find(Questionnaire.class, id);
+        //TODO: delete questionnaire and: questions/replies/points
+    }
+
+    public ArrayList<Questionnaire> getAllPreviousQuestionnaires(){
+        List<Questionnaire> questionnaires = em.createNamedQuery("Questionnaire.getAllPrevious", Questionnaire.class).setParameter(1, new Date(System.currentTimeMillis())).getResultList();
+        if(questionnaires.isEmpty()) return null;
+        else return new ArrayList<>(questionnaires);
+    }
+
     public Questionnaire findQuestionnaireById(int id){
         return em.find(Questionnaire.class,id);
     }
