@@ -1,6 +1,9 @@
 package it.polimi.db2.application.entities;
 
+import org.apache.commons.lang.time.DateUtils;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -100,6 +103,15 @@ public class User implements Serializable {
 
     public void setBanned(Boolean banned) {
         this.banned = banned;
+    }
+
+    public List<LoginLog> getLogsOfTheDay() {
+        ArrayList<LoginLog> result = new ArrayList<>();
+        for (int i=logs.size()-1; i >= 0; i--) {
+            if (!DateUtils.isSameDay(logs.get(i).getTimestamp(), new java.util.Date(System.currentTimeMillis()))) break;
+            if (logs.get(i).getCompilation_completed()) result.add(logs.get(i));
+        }
+        return result;
     }
 
     public LoginLog getLastLog() {

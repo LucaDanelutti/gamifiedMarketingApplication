@@ -1,5 +1,6 @@
 package it.polimi.db2.controllers;
 
+import it.polimi.db2.application.entities.LoginLog;
 import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.Questionnaire;
 import it.polimi.db2.application.entities.User;
@@ -84,8 +85,8 @@ public class GoToHomePage extends HttpServlet {
 	}
 
 	private Boolean checkCompilation(User user) {
-		if (DateUtils.isSameDay(user.getLastLog().getTimestamp(), new java.util.Date(System.currentTimeMillis()))) {
-			return user.getLastLog().getCompilation_completed();
+		for (LoginLog log: user.getLogsOfTheDay()) {
+			if (log.getCompilation_completed()) return true;
 		}
 		return false;
 	}
