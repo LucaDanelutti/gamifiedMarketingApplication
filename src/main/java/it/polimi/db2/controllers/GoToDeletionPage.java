@@ -54,9 +54,16 @@ public class GoToDeletionPage extends HttpServlet {
 				Thymeleaf.render("deletion", ctx);
 			}
 			else{
-				questionnaireService.deleteQuestionnaire(Integer.parseInt(idString));
-				String path = getServletContext().getContextPath() + "/adminDelete";
-				response.sendRedirect(path);
+				questionnaires=questionnaireService.getAllPreviousQuestionnaires();
+				for (Questionnaire q: questionnaires) {
+					if(q.getId()==Integer.parseInt(idString)){
+						questionnaireService.deleteQuestionnaire(Integer.parseInt(idString));
+						String path = getServletContext().getContextPath() + "/adminDelete";
+						response.sendRedirect(path);
+					}
+				}
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error in deleting ");
+
 			}
 
 		} catch (Exception e) {
