@@ -9,6 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "questionnaires", schema = "marketing_application")
 @NamedQuery(name = "Questionnaire.getQuestionnaireOfTheDay", query = "Select q from Questionnaire q where q.date = ?1")
+@NamedQuery(name = "Questionnaire.getAllQuestionnaires", query = "Select q from Questionnaire q")
 public class Questionnaire implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

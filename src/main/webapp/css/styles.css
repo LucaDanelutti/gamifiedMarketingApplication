@@ -8,6 +8,10 @@ table {
     padding: 0.5em;
 }
 
+thead td {
+    font-weight: bold;
+}
+
 form {
     max-width: 420px;
 }

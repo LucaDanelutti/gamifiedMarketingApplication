@@ -55,4 +55,14 @@ public class UserService {
 		user.getLastLog().setCompilation_completed(true);
 		em.merge(user);
 	}
+
+	public List<User> getUsersWhoSubmittedQuestionnaire(String questionnaireId) {
+		List<User> users = em.createNamedQuery("User.getUsersWhoSubmittedQuestionnaire", User.class).setParameter(1, questionnaireId).getResultList();
+		return users;
+	}
+
+	public List<User> getUsersWhoCancelledQuestionnaire(String questionnaireId) {
+		List<User> users = em.createNamedQuery("User.getUsersWhoCancelledQuestionnaire", User.class).setParameter(1, questionnaireId).getResultList();
+		return users;
+	}
 }

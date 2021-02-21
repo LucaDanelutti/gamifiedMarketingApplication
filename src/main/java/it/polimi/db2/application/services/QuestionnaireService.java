@@ -71,4 +71,11 @@ public class QuestionnaireService {
         questionnaire.setImage(image);
         em.persist(questionnaire);
     }
+
+    public List<Questionnaire> getQuestionnaires() {
+        List<Questionnaire> questionnaires = em.createNamedQuery("Questionnaire.getAllQuestionnaires", Questionnaire.class).getResultList();
+        if (questionnaires.isEmpty()) return new ArrayList<>();
+        else return questionnaires;
+    }
+
 }
