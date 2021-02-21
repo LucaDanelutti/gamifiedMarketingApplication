@@ -42,6 +42,12 @@ public class GoToHomePage extends HttpServlet {
 		// Get user
 		User user = (User) session.getAttribute("user");
 
+		if(user.getIsAdmin()==1){
+			String adminPath = getServletContext().getContextPath() + "/admin";
+			response.sendRedirect(adminPath);
+			return;
+		}
+
 		// Get servlet context
 		final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
 
