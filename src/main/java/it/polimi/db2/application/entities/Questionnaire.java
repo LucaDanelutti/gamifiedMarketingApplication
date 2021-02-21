@@ -12,7 +12,6 @@ import java.util.*;
 @NamedQuery(name = "Questionnaire.getQuestionnaireOfTheDay", query = "Select q from Questionnaire q where q.date = ?1 and q.isEnabled = 1")
 @NamedQuery(name = "Questionnaire.getNotEnabledQuestionnaires", query = "Select q from Questionnaire q where q.isEnabled = 0 and q.date >= ?1")
 @NamedQuery(name = "Questionnaire.getAllPrevious", query = "Select q from Questionnaire q where q.date < ?1")
-
 @NamedQuery(name = "Questionnaire.getAllQuestionnaires", query = "Select q from Questionnaire q")
 public class Questionnaire implements Serializable {
     @Id
@@ -27,11 +26,14 @@ public class Questionnaire implements Serializable {
     @Lob
     private byte[] image;
 
-    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Collection<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Collection<MarketingQuestion> marketingQuestions;
+
+    @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.REMOVE)
+    private Collection<StatsReply> statsReplies;
 
     public Questionnaire() {
     }

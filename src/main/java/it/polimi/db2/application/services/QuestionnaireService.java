@@ -37,7 +37,7 @@ public class QuestionnaireService {
 
     public void deleteQuestionnaire(int id){
         Questionnaire questionnaire = em.find(Questionnaire.class, id);
-        //TODO: delete questionnaire and: questions/replies/points
+        em.remove(questionnaire);
     }
 
     public ArrayList<Questionnaire> getAllPreviousQuestionnaires(){

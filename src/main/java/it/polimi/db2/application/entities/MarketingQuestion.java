@@ -20,7 +20,7 @@ public class MarketingQuestion {
     @JoinColumn(name="questionnaire_id")
     private Questionnaire questionnaire;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<MarketingReply> replies;
 
     public MarketingQuestion() {
