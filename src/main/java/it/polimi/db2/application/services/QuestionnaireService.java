@@ -30,6 +30,11 @@ public class QuestionnaireService {
         else return new ArrayList<>(notEnabled);
     }
 
+    public void enableQuestionnaire(int id){
+        Questionnaire questionnaire = em.find(Questionnaire.class, id);
+        questionnaire.setIsEnabled(1);
+    }
+
     public Questionnaire findQuestionnaireById(int id){
         return em.find(Questionnaire.class,id);
     }
