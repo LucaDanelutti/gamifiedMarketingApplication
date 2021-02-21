@@ -67,7 +67,9 @@ public class CreateQuestionnaire extends HttpServlet {
 
             Date currentDate= new Date(System.currentTimeMillis());
 
-            if(DateUtils.isSameDay(qDate,currentDate)){
+            //if it is not the same day or the day is a posterior day -> ERROR
+
+            if(DateUtils.truncatedCompareTo(currentDate,qDate,Calendar.DAY_OF_MONTH)>0){
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Only current date or posterior");
                 return;
             }

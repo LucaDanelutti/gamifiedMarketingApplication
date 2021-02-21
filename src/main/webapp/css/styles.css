@@ -40,3 +40,8 @@ fieldset {
     border: 1px solid red;
     background: rgba(255, 0, 0, 0.33);
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+}

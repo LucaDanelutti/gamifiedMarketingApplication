@@ -33,7 +33,7 @@
         <tbody>
         <tr th:each="q : ${questionnaires}">
             <td th:text="${q.name}">Name</td>
-            <td th:text="${q.date}">Date</td>
+            <td th:text="${q.date.getDate()}">Date</td>
             <td>
                 <a th:href="|adminDelete?id=${q.id}|">Delete</a>
             </td>

@@ -3,6 +3,7 @@ package it.polimi.db2.application.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
@@ -92,4 +93,9 @@ public class Questionnaire implements Serializable {
     public void setIsEnabled(int isEnabled) {
         this.isEnabled = isEnabled;
     }
+
+    public String getImageData() {
+        return Base64.getMimeEncoder().encodeToString(image);
+    }
+
 }
