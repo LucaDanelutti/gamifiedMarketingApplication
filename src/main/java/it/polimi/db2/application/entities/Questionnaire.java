@@ -1,11 +1,11 @@
 package it.polimi.db2.application.entities;
 
+import org.apache.commons.lang3.time.DateUtils;
+
+import javax.enterprise.inject.New;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "questionnaires", schema = "marketing_application")
@@ -96,6 +96,10 @@ public class Questionnaire implements Serializable {
 
     public String getImageData() {
         return Base64.getMimeEncoder().encodeToString(image);
+    }
+
+    public String getDateWithNoTime(){
+        return DateUtils.truncate(date, Calendar.DAY_OF_MONTH).toString().substring(0,10);
     }
 
 }
