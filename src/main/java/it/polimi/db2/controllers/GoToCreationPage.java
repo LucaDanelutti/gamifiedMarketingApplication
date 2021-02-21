@@ -50,7 +50,8 @@ public class GoToCreationPage extends HttpServlet {
 		//Retrieve the questionnaire of the day
 		try {
 			ArrayList<Questionnaire> notEnabled = qService.getNotEnabledQuestionnaires();
-			ctx.setVariable("questionnaires", notEnabled);
+			if(!notEnabled.isEmpty())
+				ctx.setVariable("questionnaires", notEnabled);
 		} catch (Exception e) {
 			e.printStackTrace();
 			//TODO: add correct exception handling

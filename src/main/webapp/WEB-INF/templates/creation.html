@@ -31,6 +31,7 @@
         </fieldset>
     </form>
 
+    <div th:if="${questionnaires}">
     <form method="post" action="CreateMarketingQuestion">
         <fieldset>
             <legend>Add New Marketing Question</legend>
@@ -53,7 +54,6 @@
             <input type="submit" value="Create">
         </fieldset>
     </form>
-
     <form method="post" action="EnableQuestionnaire">
         <fieldset>
             <legend>Enable Questionnaire</legend>
@@ -67,6 +67,7 @@
             <input type="submit" value="Enable">
         </fieldset>
     </form>
+    </div>
 
 </div>
 </body>
