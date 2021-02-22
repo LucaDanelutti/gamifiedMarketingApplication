@@ -147,7 +147,8 @@
         newElem.hidden = true
         newElem.type = type
         if (type === "radio") {
-            newElem.setAttribute("checked", checked)
+            if (checked)
+                newElem.setAttribute("checked", "checked")
             newElem.setAttribute("value", value)
         } else {
             newElem.setAttribute("value", value)
