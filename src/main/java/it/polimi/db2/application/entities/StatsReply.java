@@ -13,7 +13,7 @@ class StatsReplyId {
 @Entity
 @IdClass(StatsReplyId.class)
 @Table(name = "replies_stats", schema = "marketing_application")
-@NamedQuery(name = "StatsQuestion.findByQuestionnaireAndStatQuestion",
+@NamedQuery(name = "StatsReply.findByQuestionnaireAndStatQuestion",
         query = "SELECT sr FROM StatsReply sr JOIN sr.question sq JOIN sr.questionnaire q WHERE q.id=?1 AND sq.id=?2")
 public class StatsReply {
     @Id
@@ -42,5 +42,13 @@ public class StatsReply {
         this.question.addReply(this);
         this.user = user;
         this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

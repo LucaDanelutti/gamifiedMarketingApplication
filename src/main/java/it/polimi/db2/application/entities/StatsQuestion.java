@@ -36,4 +36,8 @@ public class StatsQuestion {
     public void addReply(StatsReply reply) {
         replies.add(reply);
     }
+
+    public List<StatsReply> getReplies() {
+        return replies;
+    }
 }

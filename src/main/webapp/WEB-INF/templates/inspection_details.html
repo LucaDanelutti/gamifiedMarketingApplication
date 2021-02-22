@@ -32,18 +32,37 @@
         </fieldset>
     </div>
     <div>
-        <fieldset>
-            <legend>Marketing Questions</legend>
-            <fieldset th:each="q : ${marketing_questions}">
-                <p th:text="${q.question}"></p>
-                <ul>
-                    <li th:each="a : ${q.replies}">
-                        <span th:text="${a.value}"></span>
-                        <span class="user-reply" th:text="|by ${a.user.username}|"></span>
-                    </li>
-                </ul>
-            </fieldset>
-        </fieldset>
+        <table>
+            <tbody>
+            <tr>
+                <td colspan="2"><h3>Marketing Questions</h3></td>
+            </tr>
+            <th:block th:each="q : ${marketing_questions}">
+                <tr>
+                    <td colspan="2"><b th:text="${q.question}"></b></td>
+                </tr>
+                <tr th:each="a : ${q.replies}">
+                    <td th:text="${a.value}"></td>
+                    <td th:text="${a.user.username}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+            <tbody>
+            <tr>
+                <td colspan="2"><h3>Stats Questions</h3></td>
+            </tr>
+            <th:block th:each="sq,status : ${stats_questions}">
+                <tr>
+                    <td colspan="2"><b th:text="${sq.question}"></b></td>
+                </tr>
+                <tr th:each="a : ${stats_replies[status.index]}">
+                    <td th:text="${a.value}"></td>
+                    <td th:text="${a.user.username}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
     </div>
 </div>
 </body>

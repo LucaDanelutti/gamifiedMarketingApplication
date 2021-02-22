@@ -3,10 +3,10 @@ package it.polimi.db2.application.services;
 import it.polimi.db2.application.entities.*;
 
 import javax.ejb.Stateless;
-import javax.persistence.*;
-import java.sql.Blob;
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -204,22 +204,19 @@ public class QuestionnaireService {
         em.persist(reply);
     }
 
-    public ArrayList<ArrayList<StatsReply>> getStatsRepliesOfQuestionnaire(int questionnaireID){
-        ArrayList<ArrayList<StatsReply>> statsReplies = new ArrayList<>();
+    public List<List<StatsReply>> getStatsRepliesOfQuestionnaire(String questionnaireID){
+        List<List<StatsReply>> statsReplies = new ArrayList<>();
 
-        Questionnaire questionnaire=em.find(Questionnaire.class,questionnaireID);
+        Questionnaire questionnaire=em.find(Questionnaire.class, Integer.parseInt(questionnaireID));
 
-        ArrayList<StatsQuestion> statsQuestions = new ArrayList<>(em.createNamedQuery("StatsQuestion.findAll").getResultList());
+        List<StatsQuestion> statsQuestions = em.createNamedQuery("StatsQuestion.findAll", StatsQuestion.class).getResultList();
 
         for (StatsQuestion sq : statsQuestions) {
-            ArrayList<StatsReply> sR= new ArrayList<>(
-                    em.createNamedQuery("StatsReply.findByQuestionnaireAndStatQuestion")
+            List<StatsReply> sR= em.createNamedQuery("StatsReply.findByQuestionnaireAndStatQuestion", StatsReply.class)
                     .setParameter(1, questionnaire.getId())
-                    .setParameter(2, sq.getId()).getResultList());
+                    .setParameter(2, sq.getId()).getResultList();
             statsReplies.add(sR);
         }
         return statsReplies;
     }
-
-
 }
