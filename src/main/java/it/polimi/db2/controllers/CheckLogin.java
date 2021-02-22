@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * This is the servlet that receives the POST to check the login of a user.
+ * It redirects the user to the home page or to the admin page.
+ * It makes use of the UserService EJB.
+ */
 @WebServlet(urlPatterns = "/CheckLogin")
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,8 +32,7 @@ public class CheckLogin extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// obtain and escape params
 		String username;
 		String password;
@@ -40,7 +44,6 @@ public class CheckLogin extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
 			return;
 		}
@@ -49,7 +52,6 @@ public class CheckLogin extends HttpServlet {
 			// query db to authenticate for user
 			user = usrService.checkCredentials(username, password);
 		} catch (CredentialsException | NonUniqueResultException e) {
-			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
 			return;
 		}
@@ -63,9 +65,6 @@ public class CheckLogin extends HttpServlet {
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			request.getSession().setAttribute("errorMsg", "Incorrect username or password");
 			path = getServletContext().getContextPath() + "/login";
-
-//			ctx.setVariable("errorMsg", "Incorrect username or password");
-//			Thymeleaf.render("login", ctx);
 		} else { // User logged in
 			request.getSession().setAttribute("user", user);
 			if(user.getIsAdmin()==1){ //the user is an admin user

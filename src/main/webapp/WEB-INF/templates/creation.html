@@ -32,42 +32,41 @@
     </form>
 
     <div th:if="${questionnaires}">
-    <form method="post" action="CreateMarketingQuestion">
-        <fieldset>
-            <legend>Add New Marketing Question</legend>
-            <label for="question-questionnaireID">Select Questionnaire</label>
-            <select name="question-questionnaireID" id="question-questionnaireID">
-                <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
-                </option>
-            </select>
+        <form method="post" action="CreateMarketingQuestion">
+            <fieldset>
+                <legend>Add New Marketing Question</legend>
+                <label for="question-questionnaireID">Select Questionnaire</label>
+                <select name="question-questionnaireID" id="question-questionnaireID">
+                    <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
+                    </option>
+                </select>
 
-            <label for="question-text">Text</label>
-            <input type="text" placeholder="Do you like this?" id="question-text" name="question-text">
-            <label for="question-type">Type</label>
-            <select id="question-type" name="question-type">
-                <option value="0">Boolean</option>
-                <option value="1">String</option>
-                <option value="2">Number</option>
-                <option value="3">Rating</option>
-            </select>
+                <label for="question-text">Text</label>
+                <input type="text" placeholder="Do you like this?" id="question-text" name="question-text">
+                <label for="question-type">Type</label>
+                <select id="question-type" name="question-type">
+                    <option value="0">Boolean</option>
+                    <option value="1">String</option>
+                    <option value="2">Number</option>
+                    <option value="3">Rating</option>
+                </select>
 
-            <input type="submit" value="Create">
-        </fieldset>
-    </form>
+                <input type="submit" value="Create">
+            </fieldset>
+        </form>
 
-    <form method="post" action="EnableQuestionnaire">
-        <fieldset>
-            <legend>Enable Questionnaire</legend>
-            <legend>Select Questionnaire</legend>
+        <form method="post" action="EnableQuestionnaire">
+            <fieldset>
+                <legend>Enable Questionnaire</legend>
+                <label for="toBeEnabledId">Select Questionnaire</label>
+                <select name="toBeEnabledId" id="ToBeEnabledId">
+                    <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
+                    </option>
+                </select>
 
-            <select name="toBeEnabledId" id="ToBeEnabledId">
-                <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
-                </option>
-            </select>
-
-            <input type="submit" value="Enable">
-        </fieldset>
-    </form>
+                <input type="submit" value="Enable">
+            </fieldset>
+        </form>
     </div>
 
 </div>
