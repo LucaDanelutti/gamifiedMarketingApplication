@@ -14,8 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * This is the servlet that handles the POST for the activation of a questionnaire.
+ * A questionnaire needs to be enabled after creation, so that the admin has time to insert all
+ * the marketing questions before a user answers them.
+ * This applies only when we are creating a questionnaire for the same day.
+ *
+ */
 @WebServlet("/EnableQuestionnaire")
-@MultipartConfig
 public class EnableQuestionnaire extends HttpServlet {
     @EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
     private QuestionnaireService questionnaireService;
@@ -49,17 +55,18 @@ public class EnableQuestionnaire extends HttpServlet {
             return;
         }
 
+        //retrieve the questionnaire id from the input data
         int questionnaireId;
-
         try {
             questionnaireId=Integer.parseInt(request.getParameter("toBeEnabledId"));
+            //enable the selected questionnaire
             questionnaireService.enableQuestionnaire(questionnaireId);
         } catch (Exception e) {
-            e.printStackTrace();
-            //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong when trying to enable the questionnaire!");
             return;
         }
 
+        //create the path to redirect the user
         String path = getServletContext().getContextPath() + "/adminCreate";
         response.sendRedirect(path);
     }

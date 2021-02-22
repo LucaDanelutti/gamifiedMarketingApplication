@@ -17,6 +17,13 @@ import java.time.LocalDate;
 import java.util.*;
 import org.apache.commons.lang3.time.DateUtils;
 
+
+/**
+ * This is the servlet that handles the POST for the creation of a new questionnaire.
+ * It checks that the current user is an Admin.
+ * It uses and additional function to parse the uploaded image into a byte[] stream.
+ * It needs the MultipartConfig to work with a enctype="multipart/form-data" type of html form.
+ */
 @WebServlet("/CreateQuestionnaire")
 @MultipartConfig
 public class CreateQuestionnaire extends HttpServlet {
@@ -57,55 +64,65 @@ public class CreateQuestionnaire extends HttpServlet {
         Date qDate;
         byte[] qImage;
 
-
         try {
             qName = request.getParameter("product-name");
 
+            //parse the String input date into a valid Date format
             String notFormattedDate = request.getParameter("product-date");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             qDate = format.parse(notFormattedDate);
 
+
+            //throw an error if it is trying to create a questionnaire for a previous date
+            //DateUtils allows the comparison of the two Date disregarding the hours of the days
             Date currentDate= new Date(System.currentTimeMillis());
-
-            //if it is not the same day or the day is a posterior day -> ERROR
-
             if(DateUtils.truncatedCompareTo(currentDate,qDate,Calendar.DAY_OF_MONTH)>0){
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Only current date or posterior");
                 return;
             }
 
+            //request and parse the image into a byte[]
             Part imgFile = request.getPart("product-image");
             InputStream imgContent = imgFile.getInputStream();
             qImage = readImage(imgContent);
 
+            //if some of the values are null throw an error
+            //all the fields must be filled
             if (qName == null || qDate == null ||  qImage==null) {
-                throw new Exception("Missing some input!");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "All the fields must be filled!");
+                return;
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong when trying to retrieve the input data!");
             return;
         }
 
 
+        //insert the new questionnaire
         try {
             //last value is reviews==null because we create fake reviews on the business side
             questionnaireService.createQuestionnaire(qName,qImage,qDate,null);
         } catch (Exception e) {
-            //TODO: catch correct exception
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Duplicate Date");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong when trying to add the new questionnaire!");
             return;
         }
 
+        //prepare the path to redirect the user
         String path = getServletContext().getContextPath() + "/adminCreate";
         response.sendRedirect(path);
     }
 
+    /**
+     * Utility function to create a byte[] from an InputStream
+     * @param imageInputStream the image to be parsed
+     * @return the byte array
+     * @throws IOException
+     */
     public  byte[] readImage(InputStream imageInputStream) throws IOException {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];// image can be maximum of 4MB
+        byte[] buffer = new byte[16384];// image can be maximum of 16MB
         int bytesRead = -1;
 
         try {

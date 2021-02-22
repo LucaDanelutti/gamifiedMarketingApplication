@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * This is the servlet that handles the GET for the admin page.
+ */
 @WebServlet(urlPatterns = "/admin")
 public class GoToAdminPage extends HttpServlet {
 
@@ -33,6 +36,7 @@ public class GoToAdminPage extends HttpServlet {
 		// Get servlet context
 		final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
 
+		//Redirect the user if not an admin
 		if (user.getIsAdmin() == 0) {
 			String homePath = getServletContext().getContextPath() + "/home";
 			response.sendRedirect(homePath);

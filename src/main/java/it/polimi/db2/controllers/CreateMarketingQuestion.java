@@ -1,25 +1,20 @@
 package it.polimi.db2.controllers;
 
-import it.polimi.db2.application.entities.MarketingQuestion;
-import it.polimi.db2.application.entities.Questionnaire;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
-import org.apache.commons.lang3.time.DateUtils;
 import org.thymeleaf.context.WebContext;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+/**
+ * This is the servlet the receives the POST to create a new marketing question.
+ * It checks that the user asking for the operation is an Admin user.
+ * It receives the id of the questionnaire, the text of the question and the type of the question.
+ */
 @WebServlet("/CreateMarketingQuestion")
-@MultipartConfig
 public class CreateMarketingQuestion extends HttpServlet {
     @EJB(name = "it.polimi.db2.application.services/QuestionnaireService")
     private QuestionnaireService questionnaireService;
@@ -53,22 +48,23 @@ public class CreateMarketingQuestion extends HttpServlet {
             return;
         }
 
+
         int questionnaireId;
         String text;
         int type;
-
-
         try {
+            //get the parameters from the post
             questionnaireId=Integer.parseInt(request.getParameter("question-questionnaireID"));
             text = request.getParameter("question-text");
             type = Integer.parseInt(request.getParameter("question-type"));
+            //contact the EJB QuestionnaireService to add the marketing question
             questionnaireService.addMarketingQuestion(questionnaireId,type,text);
         } catch (Exception e) {
-            e.printStackTrace();
-            //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong when adding the question!");
             return;
         }
 
+        //set the path to redirect
         String path = getServletContext().getContextPath() + "/adminCreate";
         response.sendRedirect(path);
     }
