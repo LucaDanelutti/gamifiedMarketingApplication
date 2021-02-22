@@ -1,5 +1,6 @@
 package it.polimi.db2.controllers;
 
+import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
 import it.polimi.db2.application.services.UserService;
@@ -69,13 +70,24 @@ public class CreateQuestionnaireReplies extends HttpServlet {
         List<String> values = new ArrayList<>();
         for (String key: requestContent.keySet()) {
             if (key.contains("marketing")) {
-                marketingReplies.put(Integer.parseInt(key.split("marketing")[1]), requestContent.get(key));
-                values.add(requestContent.get(key));
+                if (!requestContent.get(key).equals("")) {
+                    marketingReplies.put(Integer.parseInt(key.split("marketing")[1]), requestContent.get(key));
+                    values.add(requestContent.get(key));
+                }
             } else if (key.contains("stats")) {
                 if (!requestContent.get(key).equals("")) {
                     statsReplies.put(Integer.parseInt(key.split("stats")[1]), requestContent.get(key));
                     values.add(requestContent.get(key));
                 }
+            }
+        }
+
+        Collection<MarketingQuestion> marketingQuestions = qService.getQuestionnaireOfTheDay().getMarketingQuestions();
+        for (MarketingQuestion question: marketingQuestions) {
+            if (!marketingReplies.containsKey(question.getId())) {
+                String incompleteForm = getServletContext().getContextPath() + "/incomplete_form";
+                response.sendRedirect(incompleteForm);
+                return;
             }
         }
 
@@ -89,8 +101,9 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             for (int replyId : marketingReplies.keySet()) {
                 qService.addMarketingReply(marketingReplies.get(replyId), replyId, user);
             }
+            int questionnaireId = qService.getQuestionnaireOfTheDay().getId();
             for (int replyId : statsReplies.keySet()) {
-                qService.addStatsReply(statsReplies.get(replyId), replyId, qService.getQuestionnaireOfTheDay().getId(), user);
+                qService.addStatsReply(statsReplies.get(replyId), replyId, questionnaireId, user);
             }
             String greetingsPath = getServletContext().getContextPath() + "/greetings";
             response.sendRedirect(greetingsPath);
