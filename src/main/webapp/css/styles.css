@@ -1,51 +1,6 @@
+@import "bootstrap.css";
+
 body {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-    background: antiquewhite;
-}
-
-table {
-    border: 1px solid black;
-    padding: 0.5em;
-}
-
-thead td {
-    font-weight: bold;
-}
-
-form {
-    max-width: 420px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-}
-
-fieldset {
-    display: block;
-}
-
-.radio-box {
-    display: inline-block;
-}
-
-.button {
-    border: 1px solid black;
-    padding: 0.25em 1em;
-}
-
-.error {
-    display: inline-block;
-    padding: 0.5em;
-    border: 1px solid red;
-    background: rgba(255, 0, 0, 0.33);
-}
-
-.user-reply {
-    font-style: italic;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
+    background: #eee;
 }

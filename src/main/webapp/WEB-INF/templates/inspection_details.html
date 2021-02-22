@@ -5,64 +5,81 @@
     <title>Admin - Inspect</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Inspect questionnaire</h1>
-<p>
-    <a href="adminInspect">Back to questionnaires list</a>
-</p>
-
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div th:unless="${errorMsg}">
-    <div>
-        <fieldset>
-            <legend>Users who submitted the questionnaire</legend>
-            <ul>
-                <li th:each="u : ${users_submit}" th:text="${u.username}"></li>
-            </ul>
-        </fieldset>
-        <fieldset>
-            <legend>Users who cancelled the questionnaire</legend>
-            <ul>
-                <li th:each="u : ${users_cancel}" th:text="${u.username}"></li>
-            </ul>
-        </fieldset>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
+    <div class="mb-3">
+        <h1>Inspect questionnaire</h1>
+        <a class="btn btn-outline-primary" href="adminInspect">Back to questionnaires list</a>
     </div>
-    <div>
-        <table>
-            <tbody>
-            <tr>
-                <td colspan="2"><h3>Marketing Questions</h3></td>
-            </tr>
-            <th:block th:each="q : ${marketing_questions}">
+
+    <!--Show Error if there's an error -->
+    <p class="alert alert-danger" th:text="${errorMsg}" th:if="${errorMsg}"></p>
+    <!-- This renders if there's no error message -->
+    <div th:unless="${errorMsg}">
+        <div>
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td colspan="2"><b th:text="${q.question}"></b></td>
+                    <th>Users who submitted the questionnaire</th>
                 </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${users_submit}">
+                    <td th:text="${u.username}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Users who cancelled the questionnaire</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${users_cancel}">
+                    <td th:text="${u.username}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Marketing Questions</h3>
+            <table class="table table-striped" th:each="q : ${marketing_questions}">
+                <thead>
+                <tr>
+                    <th colspan="2" th:text="${q.question}"></th>
+                </tr>
+                <tr>
+                    <th>Answer</th>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
                 <tr th:each="a : ${q.replies}">
                     <td th:text="${a.value}"></td>
                     <td th:text="${a.user.username}"></td>
                 </tr>
-            </th:block>
-            </tbody>
-            <tbody>
-            <tr>
-                <td colspan="2"><h3>Stats Questions</h3></td>
-            </tr>
-            <th:block th:each="sq,status : ${stats_questions}">
+                </tbody>
+            </table>
+            <h3>Statistical Questions</h3>
+            <table class="table table-striped" th:each="sq,status : ${stats_questions}">
+                <thead>
                 <tr>
-                    <td colspan="2"><b th:text="${sq.question}"></b></td>
+                    <th colspan="2" th:text="${sq.question}"></th>
                 </tr>
+                <tr>
+                    <th>Answer</th>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
                 <tr th:each="a : ${stats_replies[status.index]}">
                     <td th:text="${a.value}"></td>
                     <td th:text="${a.user.username}"></td>
                 </tr>
-            </th:block>
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>

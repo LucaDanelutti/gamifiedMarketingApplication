@@ -3,36 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Login</h1>
-<form action="CheckLogin" method="POST">
-    <table>
-        <tr>
-            <td>
-                <label for="username">Username</label>
-            </td>
-            <td>
-                <input type="text" name="username" id="username" required />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="password">Password</label>
-            </td>
-            <td>
-                <input type="password" name="password" id="password" required />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="submit" value="Login" class="button">
-            </td>
-        </tr>
-    </table>
+<body class="container row pt-3">
+<form action="CheckLogin" method="POST" class="col-md-4 offset-md-4">
+    <h1>Login</h1>
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" name="username" id="username" required class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" required class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <input type="submit" value="Login" class="form-control btn btn-primary">
+    </div>
 
-    <p th:if="${session.errorMsg}" th:text="${session.errorMsg}" class="error"></p>
+    <p class="alert alert-danger" th:if="${session.errorMsg}" th:text="${session.errorMsg}"></p>
 </form>
 
 </body>

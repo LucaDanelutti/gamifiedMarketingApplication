@@ -5,32 +5,33 @@
     <title>Home</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Home</h1>
-<p th:text="${'Nice to see you again ' + session.user.username}"></p>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
+    <h1>Home</h1>
+    <p th:text="${'Nice to see you again ' + session.user.username}" class="alert alert-primary"></p>
 
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div th:unless="${errorMsg}">
-    <h2>Product of the day</h2>
-    <h3 th:text="${questionnaire.name}"></h3>
-    <img alt="photo" width="300" th:src="*{'data:image/png;base64,'+ questionnaire.getImageData()}">
-    <p th:each="r : ${questionnaire.reviews}" th:text="${r.value}"></p>
-
-    <ul>
-        <li th:if="${compilationEnabled}">
-            <a href="marketing_questions">Compile questionnaire</a>
-        </li>
-        <li>
-            <a href="leaderboard">Leaderboard</a>
-        </li>
-        <li>
-            <a href="Logout">Logout</a>
-        </li>
-    </ul>
+    <!--Show Error if there's an error -->
+    <p th:text="${errorMsg}" th:if="${errorMsg}" class="alert alert-danger"></p>
+    <!-- This renders if there's no error message -->
+    <div th:unless="${errorMsg}">
+        <div class="card mb-3">
+            <img alt="photo" class="card-img-top" th:src="*{'data:image/png;base64,'+ questionnaire.getImageData()}">
+            <div class="card-body">
+                <h5>Product of the day</h5>
+                <h3 th:text="${questionnaire.name}"></h3>
+                <h4>Reviews</h4>
+                <div class="">
+                    <p class="alert alert-info" th:each="r : ${questionnaire.reviews}" th:text="${r.value}"></p>
+                </div>
+                <a th:if="${compilationEnabled}" href="marketing_questions" class="btn btn-primary">Compile
+                    questionnaire</a>
+            </div>
+        </div>
+        <div class="mb-3">
+            <a href="leaderboard" class="btn btn-outline-primary">Leaderboard</a>
+            <a href="Logout" class="btn btn-outline-danger">Logout</a>
+        </div>
+    </div>
 </div>
 <script th:inline="javascript">
     // Clear cached answers

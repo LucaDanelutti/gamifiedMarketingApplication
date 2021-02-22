@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Thanks!</title>
-    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-    <p th:if="${errorMsg}" th:text="${errorMsg}"></p>
+<body class="container row pt-3">
+<div class="col-md-4 offset-md-4">
+    <p class="alert alert-danger" th:if="${errorMsg}" th:text="${errorMsg}"></p>
     <h1 th:unless="${errorMsg}">Thank you!</h1>
-    <a href="home">Back to Homepage</a>
+    <a class="btn btn-primary" href="home">Back to Homepage</a>
+</div>
 <script>
     // Empty cached answers, if any
     sessionStorage.clear();

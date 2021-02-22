@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Leaderboard</title>
-    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Leaderboard</h1>
-<div>
-    <a href="home">Back</a>
-</div>
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div th:unless="${errorMsg}">
-    <table>
-        <thead>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
+    <h1>Leaderboard</h1>
+    <div class="mb-3">
+        <a href="home" class="btn btn-outline-primary">Back</a>
+    </div>
+    <!--Show Error if there's an error -->
+    <p th:text="${errorMsg}" th:if="${errorMsg}" class="alert alert-danger"></p>
+
+    <!-- This renders if there's no error message -->
+    <div th:unless="${errorMsg}">
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <td>Username</td>
                 <td>Score</td>
             </tr>
-        </thead>
-        <tbody>
-        <tr th:each="pair,status : ${leaderboard}">
-            <td th:text="${pair.user.username}"></td>
-            <td th:text="${pair.score}"></td>
-        </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr th:each="pair,status : ${leaderboard}">
+                <td th:text="${pair.user.username}"></td>
+                <td th:text="${pair.score}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

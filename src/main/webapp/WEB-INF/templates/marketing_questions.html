@@ -5,58 +5,57 @@
     <title>Marketing Questions</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Marketing Questions</h1>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
+    <h1>Marketing Questions</h1>
 
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div>
+    <!--Show Error if there's an error -->
+    <div th:if="${errorMsg}">
+        <p th:text="${errorMsg}"></p>
+    </div>
+
     <p id="form-error"></p>
     <form id="marketing-form">
-        <fieldset th:each="mq : ${marketing_questions}" th:switch="${mq.type.toString()}">
+        <div class="mb-3" th:each="mq : ${marketing_questions}" th:switch="${mq.type.toString()}">
             <div th:case="'BOOL'">
                 <p th:text="${mq.question}"></p>
                 <div>
-                    <div class="radio-box">
-                        <label th:for="|${mq.id}-f|">False</label>
-                        <input type="radio" th:name="${mq.id}" th:id="|${mq.id}-f|" value="false" checked required>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" th:for="|${mq.id}-f|">False</label>
+                        <input class="form-check-input" type="radio" th:name="${mq.id}" th:id="|${mq.id}-f|" value="false" checked required>
                     </div>
-                    <div class="radio-box">
-                        <label th:for="|${mq.id}-t|">True</label>
-                        <input type="radio" th:name="${mq.id}" th:id="|${mq.id}-t|" value="true" required>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" th:for="|${mq.id}-t|">True</label>
+                        <input class="form-check-input" type="radio" th:name="${mq.id}" th:id="|${mq.id}-t|" value="true" required>
                     </div>
                 </div>
             </div>
             <div th:case="'STRING'">
-                <label th:for="${mq.id}" th:text="${mq.question}"></label>
-                <input th:id="${mq.id}" th:name="${mq.id}" type="text" required>
+                <label class="form-label" th:for="${mq.id}" th:text="${mq.question}"></label>
+                <input class="form-control" th:id="${mq.id}" th:name="${mq.id}" type="text" required>
             </div>
             <div th:case="'NUMBER'">
-                <label th:for="${mq.id}" th:text="${mq.question}"></label>
-                <input th:id="${mq.id}" th:name="${mq.id}" type="number" required>
+                <label class="form-label" th:for="${mq.id}" th:text="${mq.question}"></label>
+                <input class="form-control" th:id="${mq.id}" th:name="${mq.id}" type="number" required>
             </div>
             <div th:case="'RATING'">
                 <b th:text="${mq.question}"></b>
                 <div>
-                    <div th:each="i: ${#numbers.sequence(1, 5)}" class="radio-box">
-                        <label th:for="|${mq.id}-${i}|" th:text="${i}"></label>
-                        <input th:id="|${mq.id}-${i}|" th:name="${mq.id}" th:value="${i}" type="radio" required>
+                    <div th:each="i: ${#numbers.sequence(1, 5)}" class="form-check form-check-inline">
+                        <label class="form-check-label" th:for="|${mq.id}-${i}|" th:text="${i}"></label>
+                        <input class="form-check-input" th:id="|${mq.id}-${i}|" th:name="${mq.id}" th:value="${i}" type="radio" required>
                     </div>
                 </div>
             </div>
             <div th:case="*">
-                <p>This question type cannot be shown.</p>
+                <p class="alert alert-warning">This question type cannot be shown.</p>
             </div>
-        </fieldset>
-<!--        <input type="submit" onclick="handleNext()" value="Next">-->
+            <hr>
+        </div>
+
+        <a class="btn btn-primary" href="stats_questions" id="next" onclick="handleNext()">Next</a>
     </form>
 
-    <div>
-        <a href="stats_questions" id="next" onclick="handleNext()">Next</a>
-    </div>
 </div>
 <script th:inline="javascript">
     function handleNext() {

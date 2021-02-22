@@ -5,66 +5,73 @@
     <title>Statistical Questions</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Statistical Questions</h1>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
 
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div>
-    <form th:each="sq : ${stats_questions}" id="stats-form">
-        <fieldset th:switch="${sq.type.toString()}">
+    <h1>Statistical Questions</h1>
+
+    <!--Show Error if there's an error -->
+    <p class="alert alert-danger" th:if="${errorMsg}" th:text="${errorMsg}"></p>
+    <form id="stats-form">
+        <div th:each="sq : ${stats_questions}" th:switch="${sq.type.toString()}">
             <div th:case="'BOOL'">
-                <b th:text="${sq.question}"></b>
+                <p th:text="${sq.question}"></p>
                 <div>
-                    <div class="radio-box">
-                        <label th:for="|${sq.id}-f|">False</label>
-                        <input type="radio" th:name="${sq.id}" th:id="|${sq.id}-f|" value="false">
+                    <div class="form-check">
+                        <label class="form-check-label" th:for="|${sq.id}-f|">False</label>
+                        <input class="form-check-input" type="radio" th:name="${sq.id}" th:id="|${sq.id}-f|"
+                               value="false">
                     </div>
-                    <div class="radio-box">
-                        <label th:for="|${sq.id}-t|">True</label>
-                        <input type="radio" th:name="${sq.id}" th:id="|${sq.id}-t|" value="true">
+                    <div class="form-check">
+                        <label class="form-check-label" th:for="|${sq.id}-t|">True</label>
+                        <input class="form-check-input" type="radio" th:name="${sq.id}" th:id="|${sq.id}-t|"
+                               value="true">
                     </div>
-                    <div class="radio-box">
-                        <label th:for="|${sq.id}-n|">No Answer</label>
-                        <input type="radio" th:name="${sq.id}" th:id="|${sq.id}-n|" value="" checked>
+                    <div class="form-check">
+                        <label class="form-check-label" th:for="|${sq.id}-n|">No Answer</label>
+                        <input class="form-check-input" type="radio" th:name="${sq.id}" th:id="|${sq.id}-n|" value=""
+                               checked>
                     </div>
                 </div>
             </div>
             <div th:case="'STRING'">
-                <label th:for="${sq.id}" th:text="${sq.question}"></label>
-                <input th:id="${sq.id}" th:name="${sq.id}" type="text">
+                <label class="form-label" th:for="${sq.id}" th:text="${sq.question}"></label>
+                <input class="form-control" th:id="${sq.id}" th:name="${sq.id}" type="text">
             </div>
             <div th:case="'NUMBER'">
-                <label th:for="${sq.id}" th:text="${sq.question}"></label>
-                <input th:id="${sq.id}" th:name="${sq.id}" type="number">
+                <label class="form-label" th:for="${sq.id}" th:text="${sq.question}"></label>
+                <input class="form-control" th:id="${sq.id}" th:name="${sq.id}" type="number">
             </div>
             <div th:case="'RATING'">
                 <b th:text="${sq.question}"></b>
                 <div>
-                    <div th:each="i: ${#numbers.sequence(1, 5)}" class="radio-box">
-                        <label th:for="|${sq.id}-${i}|" th:text="${i}"></label>
-                        <input th:id="|${sq.id}-${i}|" th:name="${sq.id}" th:value="${i}" type="radio">
+                    <div th:each="i: ${#numbers.sequence(1, 5)}" class="form-check">
+                        <label class="form-check-label" th:for="|${sq.id}-${i}|" th:text="${i}"></label>
+                        <input class="form-check-input" th:id="|${sq.id}-${i}|" th:name="${sq.id}" th:value="${i}"
+                               type="radio">
                     </div>
-                    <div class="radio-box">
-                        <label th:for="|${sq.id}-0|" th:text="No Answer"></label>
-                        <input th:id="|${sq.id}-0|" th:name="${sq.id}" th:value="" type="radio" checked>
+                    <div class="form-check">
+                        <label class="form-check-label" th:for="|${sq.id}-0|" th:text="No Answer"></label>
+                        <input class="form-check-input" th:id="|${sq.id}-0|" th:name="${sq.id}" th:value="" type="radio"
+                               checked>
                     </div>
                 </div>
             </div>
-            <div th:case="*">
+            <div th:case="*" class="alert alert-warning">
                 <p>This question type cannot be shown.</p>
             </div>
-        </fieldset>
+            <hr>
+        </div>
     </form>
 
     <div>
-        <a href="marketing_questions" onclick="handleBack()">Back</a>
-        <a href="home" onclick="clearAnswers()">Cancel</a>
+
         <form action="CreateQuestionnaireReplies" method="post" id="submit-form">
-            <input type="button" value="Submit" onclick="submitAnswers()">
+            <a class="btn btn-outline-danger float-start" href="home" onclick="clearAnswers()">Cancel</a>
+            <div class="float-end">
+                <a class="btn btn-outline-primary" href="marketing_questions" onclick="handleBack()">Back</a>
+                <input class="btn btn-primary" type="button" value="Submit" onclick="submitAnswers()">
+            </div>
         </form>
     </div>
 </div>

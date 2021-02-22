@@ -5,32 +5,26 @@
     <title>Admin - Inspect</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Inspect questionnaire</h1>
-<p>
-    <a href="admin">Back to Admin Panel</a>
-</p>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
+    <div class="mb-3">
+        <h1>Inspect questionnaire</h1>
+        <a href="admin" class="btn btn-outline-primary">Back to Admin Panel</a>
+    </div>
 
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div th:unless="${errorMsg}">
-    <table>
-        <thead>
-        <tr>
-            <td>
-                Questionnaires
-            </td>
-        </tr>
-        <tr>
-            <td>Name</td>
-            <td>Date</td>
-            <td>Link</td>
-        </tr>
-        </thead>
-        <tbody>
+    <!--Show Error if there's an error -->
+    <p class="alert alert-danger" th:text="${errorMsg}" th:if="${errorMsg}"></p>
+    <!-- This renders if there's no error message -->
+    <div th:unless="${errorMsg}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Link</th>
+            </tr>
+            </thead>
+            <tbody>
             <tr th:each="q : ${questionnaires}">
                 <td th:text="${q.name}">Name</td>
                 <td th:text="${q.date}">Date</td>
@@ -38,8 +32,9 @@
                     <a th:href="|adminInspect?id=${q.id}|">Inspect</a>
                 </td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

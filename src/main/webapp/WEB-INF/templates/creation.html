@@ -5,70 +5,84 @@
     <title>Admin - Create</title>
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>Create questionnaire</h1>
-<p>
-    <a href="admin">Back to Admin Panel</a>
-</p>
-<!--Show Error if there's an error -->
-<div th:if="${errorMsg}">
-    <p th:text="${errorMsg}"></p>
-</div>
-<!-- This renders if there's no error message -->
-<div th:unless="${errorMsg}">
-
-    <form method="post"  action="CreateQuestionnaire" enctype="multipart/form-data">
-        <fieldset>
-            <legend>Create New Questionnaire</legend>
-            <label for="product-name">Product name</label>
-            <input id="product-name" name="product-name" type="text" placeholder="Teapot MK.1">
-            <label for="product-date">Questionnaire day</label>
-            <input id="product-date" name="product-date" type="date">
-            <label for="product-image">Product image</label>
-            <input id="product-image" name="product-image" type="file">
-            <br>
-            <input type="submit" name="Create questionnaire" value="Create">
-        </fieldset>
-    </form>
-
-    <div th:if="${questionnaires}">
-        <form method="post" action="CreateMarketingQuestion">
-            <fieldset>
-                <legend>Add New Marketing Question</legend>
-                <label for="question-questionnaireID">Select Questionnaire</label>
-                <select name="question-questionnaireID" id="question-questionnaireID">
-                    <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
-                    </option>
-                </select>
-
-                <label for="question-text">Text</label>
-                <input type="text" placeholder="Do you like this?" id="question-text" name="question-text">
-                <label for="question-type">Type</label>
-                <select id="question-type" name="question-type">
-                    <option value="0">Boolean</option>
-                    <option value="1">String</option>
-                    <option value="2">Number</option>
-                    <option value="3">Rating</option>
-                </select>
-
-                <input type="submit" value="Create">
-            </fieldset>
-        </form>
-
-        <form method="post" action="EnableQuestionnaire">
-            <fieldset>
-                <legend>Enable Questionnaire</legend>
-                <label for="toBeEnabledId">Select Questionnaire</label>
-                <select name="toBeEnabledId" id="ToBeEnabledId">
-                    <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}" >
-                    </option>
-                </select>
-
-                <input type="submit" value="Enable">
-            </fieldset>
-        </form>
+<body class="container row pt-3">
+<div class="col-md-6 offset-md-3">
+    <h1>Create questionnaire</h1>
+    <div>
+        <a class="btn btn-outline-primary" href="admin">Back to Admin Panel</a>
     </div>
+    <!--Show Error if there's an error -->
+    <p class="alert alert-danger" th:if="${errorMsg}" th:text="${errorMsg}"></p>
+    <!-- This renders if there's no error message -->
+    <div th:unless="${errorMsg}">
+        <hr>
+        <form method="post" action="CreateQuestionnaire" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Create New Questionnaire</legend>
+                <div class="mb-3">
+                    <label class="form-label" for="product-name">Product name</label>
+                    <input class="form-control" id="product-name" name="product-name" type="text"
+                           placeholder="Teapot MK.1">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="product-date">Questionnaire day</label>
+                    <input class="form-control" id="product-date" name="product-date" type="date">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="product-image">Product image</label>
+                    <input class="form-control" id="product-image" name="product-image" type="file">
+                </div>
+                <input class="btn btn-primary" type="submit" name="Create questionnaire" value="Create">
+            </fieldset>
+        </form>
+        <div th:if="${questionnaires}" class="mb-3">
+            <hr>
+            <form method="post" action="CreateMarketingQuestion">
+                <fieldset>
+                    <legend>Add New Marketing Question</legend>
+                    <div class="mb-3">
+                        <label class="form-label" for="question-questionnaireID">Select Questionnaire</label>
+                        <select class="form-select" name="question-questionnaireID" id="question-questionnaireID">
+                            <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="question-text">Text</label>
+                        <input class="form-control" type="text" placeholder="Do you like this?" id="question-text"
+                               name="question-text">
+                    </div>
+                    <div>
+                        <div class="mb-3">
+                            <label class="form-label" for="question-type">Type</label>
+                            <select class="form-select" id="question-type" name="question-type">
+                                <option value="0">Boolean</option>
+                                <option value="1">String</option>
+                                <option value="2">Number</option>
+                                <option value="3">Rating</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <input class="btn btn-primary" type="submit" value="Create">
+                </fieldset>
+            </form>
+            <hr>
+            <form method="post" action="EnableQuestionnaire">
+                <fieldset>
+                    <legend>Enable Questionnaire</legend>
+                    <div class="mb-3">
+                    <label class="form-label" for="toBeEnabledId">Select Questionnaire</label>
+                    <select class="form-select" name="toBeEnabledId" id="ToBeEnabledId">
+                        <option th:each="q : ${questionnaires}" th:value="${q.getId()}" th:text="${q.getName()}">
+                        </option>
+                    </select>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Enable">
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

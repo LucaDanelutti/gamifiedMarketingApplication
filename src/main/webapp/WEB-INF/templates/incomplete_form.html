@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Incomplete questionnaire</title>
-    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-<body>
-<h1>You must reply to all the marketing question!</h1>
-<a href="marketing_questions">Compile questionnaire</a>
-<a href="home">Home</a>
-<a href="Logout">Logout</a>
+<body class="container row pt-3">
+<div class="col-md-4 offset-md-4">
+    <div class="mb-3">
+        <p class="alert alert-danger">You must reply to all the marketing question!</p>
+        <a class="btn btn-primary" href="marketing_questions">Compile questionnaire</a>
+    </div>
+    <a class="btn btn-outline-primary" href="home">Home</a>
+    <a class="btn btn-outline-danger" href="Logout">Logout</a>
+</div>
 </body>
 </html>
