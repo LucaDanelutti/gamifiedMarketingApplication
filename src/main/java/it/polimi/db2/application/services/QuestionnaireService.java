@@ -204,6 +204,22 @@ public class QuestionnaireService {
         em.persist(reply);
     }
 
+    public ArrayList<ArrayList<StatsReply>> getStatsRepliesOfQuestionnaire(int questionnaireID){
+        ArrayList<ArrayList<StatsReply>> statsReplies = new ArrayList<>();
+
+        Questionnaire questionnaire=em.find(Questionnaire.class,questionnaireID);
+
+        ArrayList<StatsQuestion> statsQuestions = new ArrayList<>(em.createNamedQuery("StatsQuestion.findAll").getResultList());
+
+        for (StatsQuestion sq : statsQuestions) {
+            ArrayList<StatsReply> sR= new ArrayList<>(
+                    em.createNamedQuery("StatsReply.findByQuestionnaireAndStatQuestion")
+                    .setParameter(1, questionnaire.getId())
+                    .setParameter(2, sq.getId()).getResultList());
+            statsReplies.add(sR);
+        }
+        return statsReplies;
+    }
 
 
 }

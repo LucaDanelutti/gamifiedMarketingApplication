@@ -13,6 +13,8 @@ class StatsReplyId {
 @Entity
 @IdClass(StatsReplyId.class)
 @Table(name = "replies_stats", schema = "marketing_application")
+@NamedQuery(name = "StatsQuestion.findByQuestionnaireAndStatQuestion",
+        query = "SELECT sr FROM StatsReply sr JOIN sr.question sq JOIN sr.questionnaire q WHERE q.id=?1 AND sq.id=?2")
 public class StatsReply {
     @Id
     @ManyToOne
