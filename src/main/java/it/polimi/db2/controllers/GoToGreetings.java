@@ -39,6 +39,10 @@ public class GoToGreetings extends HttpServlet {
 			return;
 		}
 
+		if (!user.getLastLog().getCompilation_completed()) {
+			ctx.setVariable("errorMsg", "Unable to compile questionnaire!");
+		}
+
 		Thymeleaf.render("greetings", ctx);
 	}
 }

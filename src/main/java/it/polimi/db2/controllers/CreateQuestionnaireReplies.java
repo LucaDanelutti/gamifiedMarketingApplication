@@ -7,6 +7,7 @@ import it.polimi.db2.application.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 import java.io.IOException;
 import java.util.*;
 
@@ -24,6 +27,9 @@ public class CreateQuestionnaireReplies extends HttpServlet {
 
     @EJB(name = "it.polimi.db2.application.services/UserService")
     private UserService uService;
+
+    @Resource
+    UserTransaction tx;
 
     public CreateQuestionnaireReplies() {
     }
@@ -98,17 +104,29 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             response.sendRedirect(bannedPath);
         }
         else {
-            for (int replyId : marketingReplies.keySet()) {
-                qService.addMarketingReply(marketingReplies.get(replyId), replyId, user);
+            try {
+                tx.begin();
+                for (int replyId : marketingReplies.keySet()) {
+                    qService.addMarketingReply(marketingReplies.get(replyId), replyId, user);
+                }
+                int questionnaireId = qService.getQuestionnaireOfTheDay().getId();
+                for (int replyId : statsReplies.keySet()) {
+                    qService.addStatsReply(statsReplies.get(replyId), replyId, questionnaireId, user);
+                }
+                tx.commit();
+                String greetingsPath = getServletContext().getContextPath() + "/greetings";
+                response.sendRedirect(greetingsPath);
+            } catch (Exception e) {
+                try {
+                    tx.rollback();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+                String greetingsPath = getServletContext().getContextPath() + "/greetings";
+                response.sendRedirect(greetingsPath);
+                return;
             }
-            int questionnaireId = qService.getQuestionnaireOfTheDay().getId();
-            for (int replyId : statsReplies.keySet()) {
-                qService.addStatsReply(statsReplies.get(replyId), replyId, questionnaireId, user);
-            }
-            String greetingsPath = getServletContext().getContextPath() + "/greetings";
-            response.sendRedirect(greetingsPath);
         }
-
         uService.setCompilationCompleted(user);
     }
 
