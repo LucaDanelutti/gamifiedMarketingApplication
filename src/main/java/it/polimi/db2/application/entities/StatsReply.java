@@ -14,7 +14,7 @@ class StatsReplyId {
 @IdClass(StatsReplyId.class)
 @Table(name = "replies_stats", schema = "marketing_application")
 @NamedQuery(name = "StatsReply.findByQuestionnaireAndStatQuestion",
-        query = "SELECT sr FROM StatsReply sr JOIN sr.question sq JOIN sr.questionnaire q WHERE q.id=?1 AND sq.id=?2")
+        query = "SELECT sr FROM StatsReply sr WHERE sr.questionnaire.id=?1 AND sr.question.id=?2")
 public class StatsReply {
     @Id
     @ManyToOne
