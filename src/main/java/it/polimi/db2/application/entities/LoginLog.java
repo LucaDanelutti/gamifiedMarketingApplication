@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-
+/**
+ * This class is needed for the creation of a composite key for the LoginLog class
+ */
 class LoginLogId {
 	private int user;
 	private Date timestamp;
@@ -13,6 +15,9 @@ class LoginLogId {
 	}
 }
 
+/**
+ * This is the entity corresponding to the login_logs table in the database.
+ */
 @Entity
 @IdClass(LoginLogId.class)
 @Table(name = "login_logs", schema = "marketing_application")
@@ -27,14 +32,15 @@ public class LoginLog implements Serializable {
 	@JoinColumn(name= "user_id")
 	private User user;
 
-	Boolean compilation_requested;
-	Boolean compilation_completed;
+	Boolean compilation_requested; //TRUE if the user requested a compilation of the questionnaire of the day
+	Boolean compilation_completed; //TRUE if the user completed the questionnaire of the day
 
 
-	//CONSTRUCTOR
+	//CONSTRUCTORS
 
 	public LoginLog() {
 	}
+
 	public LoginLog(User user, Date timestamp){
 		this.user=user;
 		this.timestamp=timestamp;

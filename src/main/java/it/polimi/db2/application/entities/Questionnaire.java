@@ -1,12 +1,13 @@
 package it.polimi.db2.application.entities;
 
 import org.apache.commons.lang3.time.DateUtils;
-
-import javax.enterprise.inject.New;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * This is the entity corresponding to the "questionnaires" table.
+ */
 @Entity
 @Table(name = "questionnaires", schema = "marketing_application")
 @NamedQuery(name = "Questionnaire.getQuestionnaireOfTheDay", query = "Select q from Questionnaire q where q.date = ?1 and q.isEnabled = 1")
@@ -17,8 +18,10 @@ public class Questionnaire implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
     private int isEnabled;
+
     @Temporal(TemporalType.DATE)
     private Date date;
 
@@ -38,6 +41,21 @@ public class Questionnaire implements Serializable {
     public Questionnaire() {
     }
 
+    // FUNCTIONALITIES
+
+    public void addReview(Review review){
+        review.setQuestionnaire(this);
+        this.reviews.add(review);
+    }
+
+    public void addMarketingQuestion(MarketingQuestion q) {
+        marketingQuestions.add(q);
+        q.setQuestionnaire(this);
+    }
+
+
+    // GETTERS AND SETTERS
+
     public Collection<Review> getReviews() {
         return reviews;
     }
@@ -56,16 +74,6 @@ public class Questionnaire implements Serializable {
 
     public Collection<MarketingQuestion> getMarketingQuestions() {
         return marketingQuestions;
-    }
-
-    public void addMarketingQuestion(MarketingQuestion q) {
-        marketingQuestions.add(q);
-        q.setQuestionnaire(this);
-    }
-
-    public void addReview(Review review){
-        review.setQuestionnaire(this);
-        this.reviews.add(review);
     }
 
     public int getId() {
@@ -100,6 +108,7 @@ public class Questionnaire implements Serializable {
         return Base64.getMimeEncoder().encodeToString(image);
     }
 
+    // function used for debug purposes
     public String getDateWithNoTime(){
         return DateUtils.truncate(date, Calendar.DAY_OF_MONTH).toString().substring(0,10);
     }
