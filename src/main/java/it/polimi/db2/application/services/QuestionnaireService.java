@@ -21,6 +21,11 @@ public class QuestionnaireService {
     public QuestionnaireService() {
     }
 
+
+    /**
+     * ###############  GENERAL SERVICES ###############
+     */
+
     /**
      * @return The questionnaire of the current day
      */
@@ -75,75 +80,6 @@ public class QuestionnaireService {
         return em.find(Questionnaire.class,id);
     }
 
-    /**
-     * @param questionnaire_id the id of the questionnaire
-     * @return the marketing questions of the questionnaire with the provided id
-     */
-    public List<MarketingQuestion> getMarketingQuestions(Integer questionnaire_id){
-        Questionnaire questionnaire =  em.find(Questionnaire.class, questionnaire_id);
-        List<MarketingQuestion> marketingQuestions = new ArrayList<>(questionnaire.getMarketingQuestions());
-        if(marketingQuestions.size()==0) return null;
-        return marketingQuestions;
-    }
-
-    /**
-     * @return the statistical  questions
-     */
-    public List<StatsQuestion> getStatsQuestions() {
-        return em.createNamedQuery("StatsQuestion.findAll", StatsQuestion.class).getResultList();
-    }
-
-    /**
-     * @param value the value of the reply
-     * @param questionId the id of the question
-     * @param user the user who wrote the reply
-     */
-    public void addMarketingReply(String value, int questionId, User user) {
-        MarketingQuestion question = em.find(MarketingQuestion.class, questionId);
-        MarketingReply reply = new MarketingReply(question, user, value);
-        em.persist(reply);
-    }
-
-    /**
-     * @param questionnaireId the id of the questionnaire
-     * @param type the type of the question from QuestionType ENUM
-     * @param text the text of the question
-     */
-    public void addMarketingQuestion(int questionnaireId, int type, String text){
-        Questionnaire questionnaire = em.find(Questionnaire.class,questionnaireId);
-        MarketingQuestion marketingQuestion = new MarketingQuestion(text, QuestionType.getQuestionTypeFromInt(type));
-        questionnaire.addMarketingQuestion(marketingQuestion);
-        em.persist(marketingQuestion);
-    }
-
-    /**
-     *
-     * @param value the value of the reply
-     * @param questionId the id of the question
-     * @param questionnaireId the id of the questionnaire from where the reply was created
-     * @param user the user who wrote the reply
-     */
-    public void addStatsReply(String value, int questionId, int questionnaireId, User user) {
-        StatsQuestion question = em.find(StatsQuestion.class, questionId);
-        Questionnaire questionnaire = em.find(Questionnaire.class, questionnaireId);
-        StatsReply reply = new StatsReply(question, user, questionnaire, value);
-        em.persist(reply);
-    }
-
-    /**
-     *
-     * @param values the list of words to check
-     * @return a boolean value: TRUE if the provided list contains an offensive word
-     */
-    public boolean checkReplies(List<String> values) {
-        List<OffensiveWord> words = em.createNamedQuery("OffensiveWord.findAll", OffensiveWord.class).getResultList();
-        for (String value: values) {
-            for (OffensiveWord word: words) {
-                if (value.toLowerCase().contains(word.getWord().toLowerCase())) return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * This method is used to create a new questionnaire
@@ -175,6 +111,26 @@ public class QuestionnaireService {
 
     /**
      *
+     * @param values the list of words to check
+     * @return a boolean value: TRUE if the provided list contains an offensive word
+     */
+    public boolean checkReplies(List<String> values) {
+        List<OffensiveWord> words = em.createNamedQuery("OffensiveWord.findAll", OffensiveWord.class).getResultList();
+        for (String value: values) {
+            for (OffensiveWord word: words) {
+                if (value.toLowerCase().contains(word.getWord().toLowerCase())) return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * ###############  MARKETING QUESTIONS ###############
+     */
+
+    /**
+     *
      * @param id the id of th questionnaire where to retrieve the marketing questions
      * @return an arrayList containing all the marketing questions for the questionnaire with the provided id
      */
@@ -188,4 +144,66 @@ public class QuestionnaireService {
         Questionnaire q = findQuestionnaireById(_id);
         return new ArrayList<>(q.getMarketingQuestions());
     }
+
+    /**
+     * @param questionnaire_id the id of the questionnaire
+     * @return the marketing questions of the questionnaire with the provided id
+     */
+    public List<MarketingQuestion> getMarketingQuestions(Integer questionnaire_id){
+        Questionnaire questionnaire =  em.find(Questionnaire.class, questionnaire_id);
+        List<MarketingQuestion> marketingQuestions = new ArrayList<>(questionnaire.getMarketingQuestions());
+        if(marketingQuestions.size()==0) return null;
+        return marketingQuestions;
+    }
+
+    /**
+     * @param value the value of the reply
+     * @param questionId the id of the question
+     * @param user the user who wrote the reply
+     */
+    public void addMarketingReply(String value, int questionId, User user) {
+        MarketingQuestion question = em.find(MarketingQuestion.class, questionId);
+        MarketingReply reply = new MarketingReply(question, user, value);
+        em.persist(reply);
+    }
+
+    /**
+     * @param questionnaireId the id of the questionnaire
+     * @param type the type of the question from QuestionType ENUM
+     * @param text the text of the question
+     */
+    public void addMarketingQuestion(int questionnaireId, int type, String text){
+        Questionnaire questionnaire = em.find(Questionnaire.class,questionnaireId);
+        MarketingQuestion marketingQuestion = new MarketingQuestion(text, QuestionType.getQuestionTypeFromInt(type));
+        questionnaire.addMarketingQuestion(marketingQuestion);
+        em.persist(marketingQuestion);
+    }
+
+    /**
+     * ###############  STATISTICAL QUESTIONS ###############
+     */
+
+    /**
+     * @return the statistical  questions
+     */
+    public List<StatsQuestion> getStatsQuestions() {
+        return em.createNamedQuery("StatsQuestion.findAll", StatsQuestion.class).getResultList();
+    }
+
+    /**
+     *
+     * @param value the value of the reply
+     * @param questionId the id of the question
+     * @param questionnaireId the id of the questionnaire from where the reply was created
+     * @param user the user who wrote the reply
+     */
+    public void addStatsReply(String value, int questionId, int questionnaireId, User user) {
+        StatsQuestion question = em.find(StatsQuestion.class, questionId);
+        Questionnaire questionnaire = em.find(Questionnaire.class, questionnaireId);
+        StatsReply reply = new StatsReply(question, user, questionnaire, value);
+        em.persist(reply);
+    }
+
+
+
 }
