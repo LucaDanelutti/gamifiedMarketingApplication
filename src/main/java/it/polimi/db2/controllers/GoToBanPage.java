@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/greetings")
-public class GoToGreetings extends HttpServlet {
+@WebServlet(urlPatterns = "/banned")
+public class GoToBanPage extends HttpServlet {
 
-	public GoToGreetings() {
+	public GoToBanPage() {
 		super();
 	}
 
@@ -34,11 +34,12 @@ public class GoToGreetings extends HttpServlet {
 
 		//If the user is banned redirect to the banned page
 		if (user.getBanned()) {
-			String bannedPath = getServletContext().getContextPath() + "/banned";
-			response.sendRedirect(bannedPath);
-			return;
-		}
 
-		Thymeleaf.render("greetings", ctx);
+			ctx.setVariable("user", user);
+			Thymeleaf.render("banned", ctx);
+		} else {
+			String homePath = getServletContext().getContextPath() + "/home";
+			response.sendRedirect(homePath);
+		}
 	}
 }
