@@ -34,4 +34,12 @@ public class MarketingReply {
         this.user = user;
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

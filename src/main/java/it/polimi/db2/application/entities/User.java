@@ -20,6 +20,7 @@ import javax.persistence.*;
                 "               FROM questionnaires q\n" +
                 "                        JOIN login_logs l\n" +
                 "               WHERE q.date = DATE(l.timestamp)\n" +
+                "                 and compilation_requested = 1\n" +
                 "                 and compilation_completed = 1\n" +
                 "                 and q.id = ?1) as ql\n" +
                 "ON u.id = ql.user_id", resultClass = User.class)

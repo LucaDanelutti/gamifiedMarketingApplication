@@ -50,4 +50,8 @@ public class MarketingQuestion {
     public void addReply(MarketingReply reply) {
         replies.add(reply);
     }
+
+    public List<MarketingReply> getReplies() {
+        return replies;
+    }
 }

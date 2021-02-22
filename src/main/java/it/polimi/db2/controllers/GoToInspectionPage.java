@@ -1,5 +1,6 @@
 package it.polimi.db2.controllers;
 
+import it.polimi.db2.application.entities.MarketingQuestion;
 import it.polimi.db2.application.entities.User;
 import it.polimi.db2.application.services.QuestionnaireService;
 import it.polimi.db2.application.services.UserService;
@@ -57,8 +58,10 @@ public class GoToInspectionPage extends HttpServlet {
 		} else { // We're on the DETAILS page
 			List<User> usersSubmit = uService.getUsersWhoSubmittedQuestionnaire(questionnaireId);
 			List<User> usersCancel = uService.getUsersWhoCancelledQuestionnaire(questionnaireId);
+			List<MarketingQuestion> marketingQuestions = qService.getQuestionnaireMarketingQuestions(questionnaireId);
 			ctx.setVariable("users_submit", usersSubmit);
 			ctx.setVariable("users_cancel", usersCancel);
+			ctx.setVariable("marketing_questions", marketingQuestions);
 			Thymeleaf.render("inspection_details", ctx);
 		}
 	}

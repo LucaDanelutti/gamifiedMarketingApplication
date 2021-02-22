@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -111,4 +112,14 @@ public class QuestionnaireService {
         else return questionnaires;
     }
 
+    public List<MarketingQuestion> getQuestionnaireMarketingQuestions(String id) {
+        int _id;
+        try {
+            _id = Integer.parseInt(id);
+        } catch(NumberFormatException e) {
+            return new ArrayList<>();
+        }
+        Questionnaire q = findQuestionnaireById(_id);
+        return new ArrayList<>(q.getMarketingQuestions());
+    }
 }

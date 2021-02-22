@@ -41,6 +41,10 @@ fieldset {
     background: rgba(255, 0, 0, 0.33);
 }
 
+.user-reply {
+    font-style: italic;
+}
+
 img {
     max-width: 100%;
     height: auto;

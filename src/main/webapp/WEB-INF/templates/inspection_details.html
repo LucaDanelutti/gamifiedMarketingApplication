@@ -33,11 +33,14 @@
     </div>
     <div>
         <fieldset>
-            <legend>Answers</legend>
-            <fieldset th:each="q : ${questions}">
+            <legend>Marketing Questions</legend>
+            <fieldset th:each="q : ${marketing_questions}">
                 <p th:text="${q.question}"></p>
                 <ul>
-                    <li th:each="a : ${q.answers}" th:text="a.value"></li>
+                    <li th:each="a : ${q.replies}">
+                        <span th:text="${a.value}"></span>
+                        <span class="user-reply" th:text="|by ${a.user.username}|"></span>
+                    </li>
                 </ul>
             </fieldset>
         </fieldset>
