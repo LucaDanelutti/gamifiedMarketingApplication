@@ -6,9 +6,9 @@
     <link href="../../css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
-    <h1>Thank you!</h1>
+    <p th:if="${errorMsg}" th:text="${errorMsg}"></p>
+    <h1 th:unless="${errorMsg}">Thank you!</h1>
     <a href="home">Back to Homepage</a>
-
 <script>
     // Empty cached answers, if any
     sessionStorage.clear();
