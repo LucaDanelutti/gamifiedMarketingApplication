@@ -75,6 +75,7 @@ public class GoToDeletionPage extends HttpServlet {
 						//and redirect the user to the delete page
 						String path = getServletContext().getContextPath() + "/adminDelete";
 						response.sendRedirect(path);
+						return;
 					}
 				}
 				//if a match is not found render an error page
@@ -83,7 +84,6 @@ public class GoToDeletionPage extends HttpServlet {
 
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong when trying to delete a questionnaire!");
-			return;
 		}
 
 	}

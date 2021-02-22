@@ -22,9 +22,9 @@ public class QuestionnaireService {
     }
 
 
-    /**
-     * ###############  GENERAL SERVICES ###############
-     */
+
+     // ###############  GENERAL SERVICES ###############
+
 
     /**
      * @return The questionnaire of the current day
@@ -41,7 +41,7 @@ public class QuestionnaireService {
      */
     public ArrayList<Questionnaire> getNotEnabledQuestionnaires(){
         List<Questionnaire> notEnabled = em.createNamedQuery("Questionnaire.getNotEnabledQuestionnaires", Questionnaire.class).setParameter(1,new Date(System.currentTimeMillis())).getResultList();
-        if(notEnabled.isEmpty()) return null;
+        if(notEnabled == null) return null;
         else return new ArrayList<>(notEnabled);
     }
 
@@ -125,9 +125,9 @@ public class QuestionnaireService {
     }
 
 
-    /**
-     * ###############  MARKETING QUESTIONS ###############
-     */
+
+     // ###############  MARKETING QUESTIONS ###############
+
 
     /**
      *
@@ -179,9 +179,8 @@ public class QuestionnaireService {
         em.persist(marketingQuestion);
     }
 
-    /**
-     * ###############  STATISTICAL QUESTIONS ###############
-     */
+
+     // ###############  STATISTICAL QUESTIONS ###############
 
     /**
      * @return the statistical  questions
