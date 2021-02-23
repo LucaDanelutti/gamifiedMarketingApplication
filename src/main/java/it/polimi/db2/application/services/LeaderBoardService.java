@@ -15,6 +15,6 @@ public class LeaderBoardService {
     }
 
     public List<LeaderBoardPair> getLeaderBoard() {
-        return em.createQuery("Select NEW it.polimi.db2.application.entities.LeaderBoardPair(s.user, sum(s.score)) from Score s group by s.user").getResultList();
+        return em.createQuery("Select NEW it.polimi.db2.application.entities.LeaderBoardPair(s.user, sum(s.score)) from Score s group by s.user order by sum(s.score) DESC").getResultList();
     }
 }
