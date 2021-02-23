@@ -38,6 +38,7 @@ public class StatsReply {
 
     public StatsReply(StatsQuestion question, User user, Questionnaire questionnaire, String value) {
         this.questionnaire = questionnaire;
+        this.questionnaire.addStatsReply(this);
         this.question = question;
         this.question.addReply(this);
         this.user = user;

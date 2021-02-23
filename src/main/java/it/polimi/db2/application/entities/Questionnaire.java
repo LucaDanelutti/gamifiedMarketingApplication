@@ -53,6 +53,10 @@ public class Questionnaire implements Serializable {
         q.setQuestionnaire(this);
     }
 
+    public void addStatsReply(StatsReply reply){
+        statsReplies.add(reply);
+    }
+
 
     // GETTERS AND SETTERS
 

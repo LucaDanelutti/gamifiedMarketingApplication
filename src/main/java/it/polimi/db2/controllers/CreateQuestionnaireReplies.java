@@ -60,6 +60,7 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             return;
         }
 
+        //Retrieve dynamic parameters
         Map<String, String> requestContent = new HashMap<>();
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -71,6 +72,7 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             }
         }
 
+        //Split requestContent in marketingReplies and statsReplies, parse map keys (ex. "marketing5":"true" -> "5":"true")
         Map<Integer, String> marketingReplies = new HashMap<>();
         Map<Integer, String> statsReplies = new HashMap<>();
         List<String> values = new ArrayList<>();
@@ -88,6 +90,7 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             }
         }
 
+        //Checks for mandatory marketing replies
         Collection<MarketingQuestion> marketingQuestions = qService.getQuestionnaireOfTheDay().getMarketingQuestions();
         for (MarketingQuestion question: marketingQuestions) {
             if (!marketingReplies.containsKey(question.getId())) {
@@ -97,6 +100,7 @@ public class CreateQuestionnaireReplies extends HttpServlet {
             }
         }
 
+        //Checks for forbidden words
         Boolean toBan = qService.checkReplies(values);
         if (toBan) {
             uService.banUser(user);
@@ -105,6 +109,7 @@ public class CreateQuestionnaireReplies extends HttpServlet {
         }
         else {
             try {
+                //Application managed transaction
                 tx.begin();
                 for (int replyId : marketingReplies.keySet()) {
                     qService.addMarketingReply(marketingReplies.get(replyId), replyId, user);
