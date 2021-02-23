@@ -24,7 +24,7 @@ BEGIN
 	if exists(select * from marketing_application.scores where new.user_id=user_id and questionnaire_id=new.questionnaire_id) then
 		update scores set score=score+2 where new.user_id=user_id  and questionnaire_id=new.questionnaire_id;
 	else
-		insert into scores values ( new.questionnaire_id,new.user_id, 1);
+		insert into scores values ( new.questionnaire_id,new.user_id, 2);
 	end if;
 END$$    
 

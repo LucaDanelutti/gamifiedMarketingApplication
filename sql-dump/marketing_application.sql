@@ -39,7 +39,7 @@ CREATE TABLE `login_logs` (
 
 LOCK TABLES `login_logs` WRITE;
 /*!40000 ALTER TABLE `login_logs` DISABLE KEYS */;
-INSERT INTO `login_logs` VALUES ('2021-02-23 17:40:27.825',3,0,0),('2021-02-23 17:49:34.660',3,0,0),('2021-02-23 17:53:57.622',1,1,0),('2021-02-23 18:04:27.782',1,1,0);
+INSERT INTO `login_logs` VALUES ('2021-02-23 17:40:27.825',3,0,0),('2021-02-23 17:49:34.660',3,0,0),('2021-02-23 17:53:57.622',1,1,0),('2021-02-23 18:04:27.782',1,1,0),('2021-02-23 18:14:20.504',1,1,0),('2021-02-23 18:15:15.716',6,1,1),('2021-02-23 18:18:27.795',1,1,1),('2021-02-23 18:19:02.178',6,0,0),('2021-02-23 18:19:11.811',7,1,1);
 /*!40000 ALTER TABLE `login_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,11 +123,11 @@ UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `delete_scores` BEFORE DELETE ON `questionnaires` FOR EACH ROW BEGIN
 	delete from scores where scores.questionnaire_id=old.id;
@@ -215,16 +215,17 @@ CREATE TABLE `replies_marketing` (
 
 LOCK TABLES `replies_marketing` WRITE;
 /*!40000 ALTER TABLE `replies_marketing` DISABLE KEYS */;
+INSERT INTO `replies_marketing` VALUES (16,1,'3333'),(16,6,'5345345'),(16,7,'6000'),(17,1,'false'),(17,6,'true'),(17,7,'true'),(18,1,'5'),(18,6,'2'),(18,7,'1'),(19,1,'ddf4-23'),(19,6,'fgdsfgfdg'),(19,7,'bollo-marca');
 /*!40000 ALTER TABLE `replies_marketing` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `new_reply_marketing` AFTER INSERT ON `replies_marketing` FOR EACH ROW BEGIN
 	if exists(select * from marketing_application.scores where new.user_id=user_id and questionnaire_id=(select questionnaire_id from questions_marketing where id=new.questions_marketing_id) ) then
@@ -266,22 +267,23 @@ CREATE TABLE `replies_stats` (
 
 LOCK TABLES `replies_stats` WRITE;
 /*!40000 ALTER TABLE `replies_stats` DISABLE KEYS */;
+INSERT INTO `replies_stats` VALUES (14,1,1,'45'),(14,1,6,'435'),(14,1,7,'64565'),(14,2,1,'male'),(14,2,7,'ggg'),(14,3,1,'3'),(14,3,6,'3'),(14,3,7,'5');
 /*!40000 ALTER TABLE `replies_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `new_reply_stats` AFTER INSERT ON `replies_stats` FOR EACH ROW BEGIN
 	if exists(select * from marketing_application.scores where new.user_id=user_id and questionnaire_id=new.questionnaire_id) then
 		update scores set score=score+2 where new.user_id=user_id  and questionnaire_id=new.questionnaire_id;
 	else
-		insert into scores values ( new.questionnaire_id,new.user_id, 1);
+		insert into scores values ( new.questionnaire_id,new.user_id, 2);
 	end if;
 END */;;
 DELIMITER ;
@@ -314,6 +316,7 @@ CREATE TABLE `scores` (
 
 LOCK TABLES `scores` WRITE;
 /*!40000 ALTER TABLE `scores` DISABLE KEYS */;
+INSERT INTO `scores` VALUES (14,1,10),(14,6,8),(14,7,10);
 /*!40000 ALTER TABLE `scores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-23 18:05:30
+-- Dump completed on 2021-02-23 18:47:16
