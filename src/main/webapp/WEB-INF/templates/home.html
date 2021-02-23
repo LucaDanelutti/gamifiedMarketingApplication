@@ -24,8 +24,9 @@
                 <div class="">
                     <p class="alert alert-info" th:each="r : ${questionnaire.reviews}" th:text="${r.value}"></p>
                 </div>
-                <a th:if="${compilationEnabled}" href="marketing_questions" class="btn btn-primary">Compile
-                    questionnaire</a>
+                <a th:if="${compilationEnabled}!=false" href="marketing_questions" class="btn btn-primary">
+                    Compile questionnaire
+                </a>
             </div>
         </div>
         </div>
