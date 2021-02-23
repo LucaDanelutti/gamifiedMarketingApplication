@@ -32,7 +32,7 @@ public class Questionnaire implements Serializable {
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Collection<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy= "questionnaire", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Collection<MarketingQuestion> marketingQuestions;
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.REMOVE)
