@@ -14,6 +14,7 @@
     <p th:text="${errorMsg}" th:if="${errorMsg}" class="alert alert-danger"></p>
     <!-- This renders if there's no error message -->
     <div th:unless="${errorMsg}">
+        <div th:if="${questionnaire}">
         <div class="card mb-3">
             <img alt="photo" class="card-img-top" th:src="*{'data:image/png;base64,'+ questionnaire.getImageData()}">
             <div class="card-body">
@@ -26,6 +27,7 @@
                 <a th:if="${compilationEnabled}" href="marketing_questions" class="btn btn-primary">Compile
                     questionnaire</a>
             </div>
+        </div>
         </div>
         <div class="mb-3">
             <a href="leaderboard" class="btn btn-outline-primary">Leaderboard</a>

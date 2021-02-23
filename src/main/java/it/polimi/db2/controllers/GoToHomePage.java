@@ -71,8 +71,12 @@ public class GoToHomePage extends HttpServlet {
 		//Retrieve the questionnaire of the day
 		try {
 			Questionnaire questionnaire = qService.getQuestionnaireOfTheDay();
-			ctx.setVariable("questionnaire", questionnaire);
-			ctx.setVariable("compilationEnabled", !checkCompilation(user));
+			if(questionnaire != null) {
+				ctx.setVariable("questionnaire", questionnaire);
+				ctx.setVariable("compilationEnabled", !checkCompilation(user));
+			}else{
+				ctx.setVariable("compilationEnabled", false);
+			}
 		} catch (Exception e) {
 			ctx.setVariable("errorMsg", "Couldn't retrieve questionnaire of the day!");
 		} finally {
