@@ -1,4 +1,4 @@
-# Databases 2 Optional Project
+# A marketing application with JEE and JPA (DataBases 2 class project)
 > A.Y. 2020 // Group 67 // Danelutti, Di Dio Lavore, Franchini
 
 IntelliJ project with source code for the Databases 2 class optional project.
