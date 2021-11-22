@@ -32,9 +32,9 @@ You'll need to download the following tools:
 
 1. Clone this repository
 ```shell
-git clone https://github.com/LucaDanelutti/db2-2020-Danelutti-DiDioLavore-Franchini
+git clone https://github.com/LucaDanelutti/gamifiedMarketingApplication.git
 # or
-gh repo clone LucaDanelutti/db2-2020-Danelutti-DiDioLavore-Franchini
+gh repo clone LucaDanelutti/gamifiedMarketingApplication.git
 ```
 2. Download and uncompress [TomEE](https://tomee.apache.org/download-ng.html) somewhere
 3. Download and install [MySQL](https://dev.mysql.com/downloads/)
